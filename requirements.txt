@@ -1,0 +1,1 @@
+-r Wan2.2/requirements.txt
