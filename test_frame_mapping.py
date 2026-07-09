@@ -71,6 +71,11 @@ def _frozen_block_is_guaranteed_after_last_regen(a: int, b: int, video_len: int,
     after the last regenerated block, so the model always has genuine
     context to smoothly continue into -- not just whatever happened to
     survive the old fixed-width padding.
+
+    Only applies when `b != video_len - 1` -- when the edit reaches the true
+    end of the video there is no real trailing footage to freeze, so no
+    frozen block is required or produced; see the dedicated at-video-end
+    tests below instead.
     """
     window = build_regeneration_window(a, b, video_len, context_blocks=context_blocks)
     mask = build_latent_regen_mask(window)
@@ -120,8 +125,36 @@ def test_edit_ending_at_last_frame():
     window = build_regeneration_window(a=10, b=video_len - 1, video_len=video_len)
     assert window.edit_end == video_len - 1
     assert window.window_end == video_len - 1  # never extends past the real video
-    assert window.pad_end > 0  # synthetic frames fill the missing trailing anchor
+    assert 0 <= window.pad_end < 4  # at most a sub-block alignment remainder, never a full frozen context block
     assert window.num_pixel_frames % 4 == 1  # VAE 4n+1 requirement still holds
+    mask = build_latent_regen_mask(window)
+    assert mask[-1] is True  # tail is regenerated, never a frozen fabricated anchor
+
+
+def test_edit_reaching_video_end_no_padding_needed():
+    # Exact numbers from the reported bug: editing through the true end of
+    # a 121-frame video. Regression guard for the trailing-anchor bug --
+    # previously this fabricated `pad_end` frozen frames that were literal
+    # duplicates of the original (uncorrected) ending, biasing the edit
+    # back toward the old motion even at noise_strength=1.0.
+    window = build_regeneration_window(a=54, b=120, video_len=121)
+    assert window.window_end == 120
+    assert window.edit_end == 120
+    assert window.pad_end == 0  # this case happens to land exactly on a block boundary
+    mask = build_latent_regen_mask(window)
+    assert mask[-1] is True  # no frozen block appended after the edit region
+    assert window.num_pixel_frames % 4 == 1
+
+
+def test_edit_reaching_video_end_padding_is_bounded_and_never_frozen():
+    # a=10, b=99, video_len=100 is NOT block-aligned at the tail -> pad_end
+    # is a small (< temporal_stride) alignment remainder, not zero. The key
+    # invariant is that it's never a full frozen context block and never
+    # marked frozen -- unlike the pre-fix behavior.
+    window = build_regeneration_window(a=10, b=99, video_len=100)
+    assert 0 <= window.pad_end < 4
+    mask = build_latent_regen_mask(window)
+    assert mask[-1] is True
 
 
 def test_full_video_edit():
@@ -131,6 +164,17 @@ def test_full_video_edit():
     assert window.edit_start == 0
     assert window.edit_end == video_len - 1
     assert window.num_pixel_frames % 4 == 1
+
+
+def test_full_video_edit_needs_no_trailing_anchor():
+    # a==0 and b==video_len-1 together: neither boundary needs an anchor.
+    video_len = 50
+    window = build_regeneration_window(a=0, b=video_len - 1, video_len=video_len)
+    assert window.window_start == 0
+    assert window.window_end == video_len - 1
+    mask = build_latent_regen_mask(window)
+    assert mask[0] is True  # no leading anchor either (already covered by test_edit_starting_at_frame_zero)
+    assert mask[-1] is True  # no trailing anchor
 
 
 def test_out_of_range_frame_indices_still_rejected():

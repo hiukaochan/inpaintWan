@@ -44,8 +44,11 @@ class FrameRangeWindow:
     the real frame at `window_end`) appended after it purely to satisfy the
     VAE's `4n+1` pixel-count requirement when there isn't enough real
     trailing footage -- i.e. when the edit region extends through the true
-    last frame of the video. These synthetic frames are frozen context the
-    model sees but are always discarded before the final splice, since
+    last frame of the video. At most `temporal_stride - 1` such frames are
+    ever needed, and they always fall inside the same latent block that
+    already overlaps `edit_end`, so `build_latent_regen_mask` always marks
+    that block regenerated, never frozen -- there is no fabricated anchor.
+    They're discarded before the final splice regardless, since
     `edit_end <= window_end` always holds.
     """
 
@@ -98,12 +101,15 @@ def build_regeneration_window(
       `edit_start` both become 0. The right-side math only depends on
       `edit_end - window_start`, so the `4n+1` window length is unaffected
       and no padding is needed.
-    - `b == video_len - 1`: skip the trailing context-block requirement;
-      `edit_end` clamps to `video_len - 1` instead of `b + 1` (which would
-      be out of bounds). The desired window end generally still exceeds
-      `video_len - 1` once rounded out to whole latent blocks, so the
-      shortfall is recorded as `pad_end` and filled with synthetic
-      (replicated) frames by the caller -- see `FrameRangeWindow`.
+    - `b == video_len - 1`: skip the trailing context-block requirement
+      entirely (no `context_blocks * temporal_stride` anchor is required or
+      fabricated); `edit_end` clamps to `video_len - 1` instead of `b + 1`
+      (which would be out of bounds). Rounding the regenerate region out to
+      a whole latent block can still leave a small (`< temporal_stride`)
+      alignment remainder past the true last frame, which is recorded as
+      `pad_end` and filled with synthetic (replicated) frames by the caller
+      -- see `FrameRangeWindow`. That remainder always lands inside the
+      already-regenerated final block, never a frozen anchor.
 
     Any other `a`/`b` that doesn't clear the normal margin still raises,
     unchanged.
@@ -129,7 +135,8 @@ def build_regeneration_window(
 
     local_edit_end = edit_end - window_start
     aligned_regen_end = -(-local_edit_end // temporal_stride) * temporal_stride  # round up to a block end
-    desired_window_end = window_start + aligned_regen_end + temporal_stride * context_blocks
+    trailing_context = 0 if at_video_end else temporal_stride * context_blocks
+    desired_window_end = window_start + aligned_regen_end + trailing_context
 
     if at_video_end:
         window_end = video_len - 1

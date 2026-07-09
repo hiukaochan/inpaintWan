@@ -85,7 +85,12 @@ python frame_range_edit.py \
   much like a wholesale scene replacement (lower it) or too similar to the
   original (raise it).
 - The video needs enough real frames of context before `A` and after `B`;
-  otherwise the script raises with a clear message.
+  otherwise the script raises with a clear message. Two exact boundary
+  cases are always allowed regardless of context availability:
+  `--start_frame 0` (edit through the start of the video) and
+  `--end_frame <last frame index>` (edit through the end of the video) --
+  neither needs a frozen anchor on that side, since there's nothing before
+  frame 0 or after the last frame to freeze.
 - Add `--t5_cpu` / drop `--no_offload` flags to tune VRAM usage the same way
   Wan2.2's own `generate.py` does.
 
