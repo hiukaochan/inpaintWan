@@ -37,14 +37,30 @@ huggingface-cli download Wan-AI/Wan2.2-TI2V-5B \
 
 Confirms Wan2.2 itself works before touching our custom script:
 
-```bash
+
+<!-- ```bash
 cd Wan2.2
+WAN_SKIP_DECODE=1 WAN_LATENT_PATH=/tmp/wan_latent.pt \
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+torchrun --nproc_per_node=4 generate.py --task ti2v-5B --size 1280*704 \
+    --ckpt_dir checkpoints/Wan2.2-TI2V-5B \
+    --dit_fsdp --t5_fsdp \
+    --ulysses_size 4 \
+    --frame_num 81 \
+    --offload_model True \
+    --image firstframe.png \
+    --prompt "A white robotic arm with black joints and cables extends from a base on a wooden table, positioned near a closed white door. The arm's gripper, equipped with a small black device, slowly moves toward the door's handle, adjusting its angle as it approaches. The background includes a wall with a framed picture and a mounted camera, suggesting a tech-focused environment. The robotic arm's movements are smooth and deliberate, showcasing precision and control. A medium shot captures the entire setup, emphasizing the interaction between the robot and the door." 2>&1 | tee /tmp/run.log
+``` -->
+```
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+CUDA_VISIBLE_DEVICES=1 \
 python generate.py --task ti2v-5B --size 1280*704 \
     --ckpt_dir checkpoints/Wan2.2-TI2V-5B \
     --offload_model True --convert_model_dtype --t5_cpu \
-    --prompt "a robot arm picks up a red block"
+    --frame_num 121 \
+    --image firstframe.png \
+    --prompt "A white robotic arm with black joints and cables extends from a base on a wooden table, positioned near a closed white door. The arm's gripper, equipped with a small black device, slowly moves toward the door's handle, adjusting its angle as it approaches. The background includes a wall with a framed picture and a mounted camera, suggesting a tech-focused environment. The robotic arm's movements are smooth and deliberate, showcasing precision and control. A medium shot captures the entire setup, emphasizing the interaction between the robot and the door."
 ```
-
 ## Step 1: generate an initial video
 
 ```bash
@@ -63,11 +79,13 @@ module docstring.
 ## Step 2: correct a frame range
 
 ```bash
+CUDA_VISIBLE_DEVICES=1 \
 python frame_range_edit.py \
     --input_video initial.mp4 \
-    --start_frame 20 --end_frame 40 \
-    --prompt "make the gripper close to the apple" \
-    --output out.mp4 \
+    --start_frame 54 --end_frame 120 \
+    --prompt "Keep the arm's skeleton and structure identical — only move/rotate it as a rigid body so the gripper reaches toward the door handle. No change to shape, geometry, or proportions, pose change only." \
+    --output out_8.mp4 \
+    --noise_strength 1.0 \
     --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
 ```
 
