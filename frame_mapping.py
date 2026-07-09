@@ -39,16 +39,25 @@ class FrameRangeWindow:
     """A crop window of the source video used for one edit.
 
     All indices are in the source video's pixel-frame coordinate space.
+    `window_end` is always a real frame index (`<= video_len - 1`); it is
+    never itself padded. `pad_end` counts synthetic frames (replicated from
+    the real frame at `window_end`) appended after it purely to satisfy the
+    VAE's `4n+1` pixel-count requirement when there isn't enough real
+    trailing footage -- i.e. when the edit region extends through the true
+    last frame of the video. These synthetic frames are frozen context the
+    model sees but are always discarded before the final splice, since
+    `edit_end <= window_end` always holds.
     """
 
     window_start: int  # first pixel frame included in the crop
-    window_end: int  # last pixel frame included in the crop
-    edit_start: int  # A-1: first frame that may be regenerated
-    edit_end: int  # B+1: last frame that may be regenerated
+    window_end: int  # last REAL pixel frame included in the crop
+    edit_start: int  # first frame that may be regenerated
+    edit_end: int  # last frame that may be regenerated
+    pad_end: int = 0  # synthetic frames appended after window_end, VAE-alignment only
 
     @property
     def num_pixel_frames(self) -> int:
-        return self.window_end - self.window_start + 1
+        return (self.window_end - self.window_start + 1) + self.pad_end
 
     def local(self, global_idx: int) -> int:
         return global_idx - self.window_start
@@ -80,29 +89,60 @@ def build_regeneration_window(
     are required immediately after it. This also makes the window length
     automatically satisfy Wan2.2's `4n+1` frame-count requirement, so no
     iterative padding is needed.
+
+    Two exact boundary cases are special-cased because they need no anchor
+    at all on that side -- there's nothing before pixel frame 0 or after the
+    true last frame to freeze in the first place:
+
+    - `a == 0`: skip the left context-margin requirement; `window_start` and
+      `edit_start` both become 0. The right-side math only depends on
+      `edit_end - window_start`, so the `4n+1` window length is unaffected
+      and no padding is needed.
+    - `b == video_len - 1`: skip the trailing context-block requirement;
+      `edit_end` clamps to `video_len - 1` instead of `b + 1` (which would
+      be out of bounds). The desired window end generally still exceeds
+      `video_len - 1` once rounded out to whole latent blocks, so the
+      shortfall is recorded as `pad_end` and filled with synthetic
+      (replicated) frames by the caller -- see `FrameRangeWindow`.
+
+    Any other `a`/`b` that doesn't clear the normal margin still raises,
+    unchanged.
     """
     if a > b:
         raise ValueError("a must be <= b")
     if context_blocks < 1:
         raise ValueError("context_blocks must be >= 1")
-    if a - CONTEXT_MARGIN < 0:
+    if not (0 <= a < video_len) or not (0 <= b < video_len):
+        raise ValueError(f"a and b must be valid frame indices in [0, {video_len - 1}]")
+
+    at_video_start = a == 0
+    at_video_end = b == video_len - 1
+
+    if a - CONTEXT_MARGIN < 0 and not at_video_start:
         raise ValueError(
             f"frame range too close to the video start: need at least "
             f"{CONTEXT_MARGIN} frames of context before a")
 
-    edit_start, edit_end = a - 1, b + 1
-    window_start = a - CONTEXT_MARGIN
+    edit_start = 0 if at_video_start else a - 1
+    edit_end = (video_len - 1) if at_video_end else b + 1
+    window_start = 0 if at_video_start else a - CONTEXT_MARGIN
 
     local_edit_end = edit_end - window_start
     aligned_regen_end = -(-local_edit_end // temporal_stride) * temporal_stride  # round up to a block end
-    window_end = window_start + aligned_regen_end + temporal_stride * context_blocks
+    desired_window_end = window_start + aligned_regen_end + temporal_stride * context_blocks
 
-    if window_end > video_len - 1:
-        raise ValueError(
-            "frame range too close to the video end: need "
-            f"{window_end - (video_len - 1)} more frame(s) of trailing context after b")
+    if at_video_end:
+        window_end = video_len - 1
+        pad_end = desired_window_end - window_end
+    else:
+        if desired_window_end > video_len - 1:
+            raise ValueError(
+                "frame range too close to the video end: need "
+                f"{desired_window_end - (video_len - 1)} more frame(s) of trailing context after b")
+        window_end = desired_window_end
+        pad_end = 0
 
-    return FrameRangeWindow(window_start, window_end, edit_start, edit_end)
+    return FrameRangeWindow(window_start, window_end, edit_start, edit_end, pad_end)
 
 
 def build_latent_regen_mask(

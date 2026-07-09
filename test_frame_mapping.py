@@ -106,6 +106,43 @@ def test_context_blocks_extends_required_trailing_context():
     _frozen_block_is_guaranteed_after_last_regen(a=10, b=14, video_len=200, context_blocks=2)
 
 
+def test_edit_starting_at_frame_zero():
+    window = build_regeneration_window(a=0, b=5, video_len=100)
+    assert window.window_start == 0
+    assert window.edit_start == 0
+    assert window.pad_end == 0  # right-side math is unaffected by window_start, so no padding needed
+    mask = build_latent_regen_mask(window)
+    assert mask[0] is True  # no frozen anchor before frame 0 -- it's part of the regen region
+
+
+def test_edit_ending_at_last_frame():
+    video_len = 100
+    window = build_regeneration_window(a=10, b=video_len - 1, video_len=video_len)
+    assert window.edit_end == video_len - 1
+    assert window.window_end == video_len - 1  # never extends past the real video
+    assert window.pad_end > 0  # synthetic frames fill the missing trailing anchor
+    assert window.num_pixel_frames % 4 == 1  # VAE 4n+1 requirement still holds
+
+
+def test_full_video_edit():
+    video_len = 50
+    window = build_regeneration_window(a=0, b=video_len - 1, video_len=video_len)
+    assert window.window_start == 0
+    assert window.edit_start == 0
+    assert window.edit_end == video_len - 1
+    assert window.num_pixel_frames % 4 == 1
+
+
+def test_out_of_range_frame_indices_still_rejected():
+    for kwargs in [dict(a=-1, b=5, video_len=100), dict(a=10, b=100, video_len=100)]:
+        try:
+            build_regeneration_window(**kwargs)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"expected ValueError for out-of-range indices: {kwargs}")
+
+
 if __name__ == "__main__":
     tests = [obj for name, obj in list(globals().items()) if name.startswith("test_")]
     for test in tests:

@@ -8,6 +8,14 @@ the model only sees them as clean conditioning, and the final splice copies
 everything outside [A-1, B+1] byte-for-byte from the source regardless of
 what the model produced there.
 
+`A == 0` and `B == the last frame of the video` are supported as exact
+boundary cases -- there's no anchor before frame 0 or after the last frame
+to freeze, so none is required on that side. See
+`frame_mapping.py::build_regeneration_window` for the details; the latter
+case pads the model's input with replicated edge frames purely to satisfy
+the VAE's frame-count alignment, which are discarded before the final
+splice and never appear in the output.
+
 The conditioning mechanism generalizes the first-frame-only trick already
 shipped in `Wan2.2/wan/textimage2video.py::WanTI2V.i2v` (paste the clean VAE
 latent into frozen positions -- both the initial latent and after every
@@ -269,8 +277,13 @@ def slugify(text: str) -> str:
 def parse_args():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--input_video", type=Path, required=True)
-    ap.add_argument("--start_frame", type=int, required=True, help="A: first frame of the range to edit")
-    ap.add_argument("--end_frame", type=int, required=True, help="B: last frame of the range to edit")
+    ap.add_argument(
+        "--start_frame", type=int, required=True,
+        help="A: first frame of the range to edit; 0 is allowed (edits through the start of the video)")
+    ap.add_argument(
+        "--end_frame", type=int, required=True,
+        help="B: last frame of the range to edit; the video's last frame index is allowed "
+             "(edits through the end of the video)")
     ap.add_argument("--prompt", type=str, default=None)
     ap.add_argument(
         "--prompt_file", type=Path, default=None,
@@ -311,6 +324,13 @@ def main():
     regen_mask = build_latent_regen_mask(window)
 
     raw_window_frames = full_frames[window.window_start:window.window_end + 1]
+    if window.pad_end > 0:
+        # No real footage exists beyond window_end (edit range reaches the
+        # true end of the video) -- pad with the last real frame, replicated,
+        # purely to satisfy the VAE's 4n+1 alignment requirement. Discarded
+        # before the final splice; never appears in the output.
+        pad_block = np.repeat(raw_window_frames[-1:], window.pad_end, axis=0)
+        raw_window_frames = np.concatenate([raw_window_frames, pad_block], axis=0)
     orig_h, orig_w = raw_window_frames.shape[1:3]
     valid_w = round_down_to_multiple(orig_w, SPATIAL_MULTIPLE)
     valid_h = round_down_to_multiple(orig_h, SPATIAL_MULTIPLE)
