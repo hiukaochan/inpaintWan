@@ -13,6 +13,8 @@ GPU or checkpoints.
 
 from dataclasses import dataclass
 
+import numpy as np
+
 DEFAULT_TEMPORAL_STRIDE = 4
 CONTEXT_MARGIN = 2  # frames A-2 / B+2 are the frozen anchors (per spec)
 
@@ -141,6 +143,7 @@ def build_regeneration_window(
     if at_video_end:
         window_end = video_len - 1
         pad_end = desired_window_end - window_end
+        print(f"[DEBUG] build_regeneration_window: window_end={window_end}, desired_window_end={desired_window_end}, pad_end={pad_end}")
     else:
         if desired_window_end > video_len - 1:
             raise ValueError(
@@ -176,3 +179,53 @@ def build_latent_regen_mask(
         overlaps_edit = not (hi < local_edit_start or lo > local_edit_end)
         mask.append(overlaps_edit)
     return mask
+
+
+def build_spatial_latent_regen_mask(
+    window: FrameRangeWindow,
+    pixel_mask: np.ndarray,
+    temporal_stride: int = DEFAULT_TEMPORAL_STRIDE,
+    vae_spatial_stride: int = 16,
+    patch_spatial: int = 2,
+) -> np.ndarray:
+    """Per-latent-position mask (True = regenerate) that also varies spatially.
+
+    `pixel_mask` is a bool array `(num_pixel_frames, H, W)` at the model-input
+    resolution, aligned to `window` the same way the window's pixel frames
+    are. A latent position is regenerated only if it's both temporally inside
+    `[edit_start, edit_end]` (same rule as `build_latent_regen_mask`) AND its
+    corresponding pixel block contains at least one True pixel -- the spatial
+    mask can only narrow what the temporal mask already allows, never widen it.
+
+    The DiT groups `patch_spatial x patch_spatial` latent pixels into one
+    token and (per `frame_range_edit.py`'s per-token timestep trick) reads
+    the mask via a stride-`patch_spatial` subsample -- so the returned mask
+    must be constant within every such block, or that subsample would pick
+    an arbitrary corner of an inconsistent block. Pooling at
+    `vae_spatial_stride * patch_spatial` (32 for ti2v-5B) and re-expanding to
+    latent resolution guarantees this by construction.
+    """
+    n_pixel = window.num_pixel_frames
+    if pixel_mask.shape[0] != n_pixel:
+        raise ValueError(
+            f"pixel_mask has {pixel_mask.shape[0]} frames but the window covers {n_pixel}")
+    h, w = pixel_mask.shape[1:]
+    pool = vae_spatial_stride * patch_spatial
+    if h % pool != 0 or w % pool != 0:
+        raise ValueError(f"pixel_mask spatial size ({h}, {w}) must be a multiple of {pool}")
+    h_pool, w_pool = h // pool, w // pool
+
+    pooled = pixel_mask.reshape(n_pixel, h_pool, pool, w_pool, pool).any(axis=(2, 4))
+
+    n_latent = num_latent_frames(n_pixel, temporal_stride)
+    temporal_mask = build_latent_regen_mask(window, temporal_stride)
+
+    mask = np.zeros((n_latent, h_pool, w_pool), dtype=bool)
+    for i in range(n_latent):
+        if not temporal_mask[i]:
+            continue
+        lo, hi = latent_frame_to_pixel_range(i, temporal_stride)
+        hi = min(hi, n_pixel - 1)
+        mask[i] = pooled[lo:hi + 1].any(axis=0)
+
+    return mask.repeat(patch_spatial, axis=1).repeat(patch_spatial, axis=2)

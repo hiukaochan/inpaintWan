@@ -47,7 +47,12 @@ from wan.utils.fm_solvers import (  # noqa: E402
 )
 from wan.utils.fm_solvers_unipc import FlowUniPCMultistepScheduler  # noqa: E402
 
-from frame_mapping import build_latent_regen_mask, build_regeneration_window, FrameRangeWindow
+from frame_mapping import (
+    build_latent_regen_mask,
+    build_regeneration_window,
+    build_spatial_latent_regen_mask,
+    FrameRangeWindow,
+)
 
 SPATIAL_MULTIPLE = 32  # patch_size[1]*vae_stride[1] == patch_size[2]*vae_stride[2] for ti2v-5B
 
@@ -88,6 +93,25 @@ def round_down_to_multiple(x: int, m: int) -> int:
 
 def resize_frames(frames: np.ndarray, w: int, h: int) -> np.ndarray:
     return np.stack([cv2.resize(f, (w, h), interpolation=cv2.INTER_LANCZOS4) for f in frames])
+
+
+def resize_mask_frames(mask: np.ndarray, w: int, h: int) -> np.ndarray:
+    """Nearest-neighbor resize for a bool (T, H, W) mask -- masks are categorical,
+    so Lanczos (used for pixel frames) would blur edges into fractional values."""
+    resized = np.stack([
+        cv2.resize(f.astype(np.uint8), (w, h), interpolation=cv2.INTER_NEAREST) for f in mask
+    ])
+    return resized.astype(bool)
+
+
+def parse_box(box: str) -> tuple[int, int, int, int]:
+    parts = [int(p) for p in box.split(",")]
+    if len(parts) != 4:
+        raise ValueError(f"--mask_box must be 'x1,y1,x2,y2', got {box!r}")
+    x1, y1, x2, y2 = parts
+    if not (x1 < x2 and y1 < y2):
+        raise ValueError(f"--mask_box must have x1<x2 and y1<y2, got {box!r}")
+    return x1, y1, x2, y2
 
 
 def frames_to_vae_input(frames: np.ndarray, device: torch.device) -> torch.Tensor:
@@ -146,7 +170,7 @@ class WanFrameRangeEditor:
     def edit(
         self,
         window_frames: np.ndarray,
-        regen_mask: list,
+        regen_mask: np.ndarray,
         prompt: str,
         n_prompt: str = "",
         sampling_steps: int = 50,
@@ -172,11 +196,11 @@ class WanFrameRangeEditor:
         z = pipe.vae.encode([video_in])[0]  # (z_dim, T_latent, H_latent, W_latent)
 
         mask = torch.tensor(regen_mask, dtype=z.dtype, device=device)
-        if mask.shape[0] != z.shape[1]:
+        if mask.shape != z.shape[1:]:
             raise ValueError(
-                f"regen_mask has {mask.shape[0]} entries but the VAE produced "
-                f"{z.shape[1]} latent frames -- pixel/latent mapping mismatch")
-        mask2 = mask.view(1, -1, 1, 1).expand_as(z)  # 1 = regenerate, 0 = frozen context
+                f"regen_mask has shape {tuple(mask.shape)} but the VAE produced latent "
+                f"shape {tuple(z.shape[1:])} -- pixel/latent mapping mismatch")
+        mask2 = mask.unsqueeze(0).expand_as(z)  # 1 = regenerate, 0 = frozen context
 
         seed = seed if seed >= 0 else torch.seed()
         seed_g = torch.Generator(device=device)
@@ -293,7 +317,7 @@ def parse_args():
     ap.add_argument("--ckpt_dir", type=str, required=True)
     ap.add_argument("--task", type=str, default="ti2v-5B", choices=["ti2v-5B"])
     ap.add_argument("--seed", type=int, default=-1)
-    ap.add_argument("--num_steps", type=int, default=50)
+    ap.add_argument("--num_steps", type=int, default=20)
     ap.add_argument("--guide_scale", type=float, default=5.0)
     ap.add_argument("--shift", type=float, default=5.0)
     ap.add_argument(
@@ -303,6 +327,15 @@ def parse_args():
     ap.add_argument(
         "--context_blocks", type=int, default=1,
         help="number of guaranteed-frozen 4-frame latent blocks required immediately after the edit region")
+    ap.add_argument(
+        "--edit_mode", type=str, default="full", choices=["full", "spatial"],
+        help="'full' regenerates entire frames in the range (default). 'spatial' regenerates only "
+             "the pixels inside --mask_box, keeping the rest of each frame biased toward its original "
+             "content (soft latent-level masking, not a byte-exact guarantee)")
+    ap.add_argument(
+        "--mask_box", type=str, default=None,
+        help="'x1,y1,x2,y2' in source-video pixel coordinates; the region to regenerate in --edit_mode "
+             "spatial. Required iff --edit_mode is 'spatial'")
     ap.add_argument("--sample_solver", type=str, default="unipc", choices=["unipc", "dpm++"])
     ap.add_argument("--device_id", type=int, default=0)
     ap.add_argument("--t5_cpu", action="store_true")
@@ -314,6 +347,10 @@ def main():
     args = parse_args()
     if not args.prompt and not args.prompt_file:
         raise ValueError("must pass --prompt or --prompt_file")
+    if args.edit_mode == "spatial" and args.mask_box is None:
+        raise ValueError("--edit_mode spatial requires --mask_box")
+    if args.edit_mode == "full" and args.mask_box is not None:
+        raise ValueError("--mask_box is only used with --edit_mode spatial")
     prompts = [args.prompt] if args.prompt else [
         line.strip() for line in args.prompt_file.read_text().splitlines() if line.strip()
     ]
@@ -321,7 +358,7 @@ def main():
     full_frames, fps = read_video_frames(args.input_video)
     window = build_regeneration_window(
         args.start_frame, args.end_frame, len(full_frames), context_blocks=args.context_blocks)
-    regen_mask = build_latent_regen_mask(window)
+    temporal_mask = build_latent_regen_mask(window)
 
     raw_window_frames = full_frames[window.window_start:window.window_end + 1]
     if window.pad_end > 0:
@@ -335,6 +372,19 @@ def main():
     valid_w = round_down_to_multiple(orig_w, SPATIAL_MULTIPLE)
     valid_h = round_down_to_multiple(orig_h, SPATIAL_MULTIPLE)
     model_input_frames = resize_frames(raw_window_frames, valid_w, valid_h)
+
+    cfg = WAN_CONFIGS[args.task]
+    if args.edit_mode == "spatial":
+        x1, y1, x2, y2 = parse_box(args.mask_box)
+        pixel_mask = np.zeros((raw_window_frames.shape[0], orig_h, orig_w), dtype=bool)
+        pixel_mask[:, y1:y2, x1:x2] = True
+        pixel_mask = resize_mask_frames(pixel_mask, valid_w, valid_h)
+        regen_mask = build_spatial_latent_regen_mask(
+            window, pixel_mask, vae_spatial_stride=cfg.vae_stride[1], patch_spatial=cfg.patch_size[1])
+    else:
+        h_latent, w_latent = valid_h // cfg.vae_stride[1], valid_w // cfg.vae_stride[2]
+        regen_mask = np.broadcast_to(
+            np.array(temporal_mask, dtype=bool)[:, None, None], (len(temporal_mask), h_latent, w_latent))
 
     editor = WanFrameRangeEditor(
         checkpoint_dir=args.ckpt_dir, task=args.task, device_id=args.device_id,

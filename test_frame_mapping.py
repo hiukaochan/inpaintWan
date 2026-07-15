@@ -3,9 +3,12 @@
 Run with: python inpainting/test_frame_mapping.py
 """
 
+import numpy as np
+
 from frame_mapping import (
     build_latent_regen_mask,
     build_regeneration_window,
+    build_spatial_latent_regen_mask,
     latent_frame_to_pixel_range,
     num_latent_frames,
 )
@@ -175,6 +178,68 @@ def test_full_video_edit_needs_no_trailing_anchor():
     mask = build_latent_regen_mask(window)
     assert mask[0] is True  # no leading anchor either (already covered by test_edit_starting_at_frame_zero)
     assert mask[-1] is True  # no trailing anchor
+
+
+def test_build_spatial_latent_regen_mask_never_widens_temporal():
+    # window is [8, 20] (13 frames -> 4 latent frames); latent ranges are
+    # (0,0) (1,4) (5,8) (9,12); temporal mask is [False, True, True, False]
+    window = build_regeneration_window(a=10, b=15, video_len=100)
+    pixel_mask = np.ones((window.num_pixel_frames, 64, 64), dtype=bool)  # fully permissive spatially
+    mask = build_spatial_latent_regen_mask(window, pixel_mask)
+    assert mask.shape == (4, 4, 4)  # 64 / vae_spatial_stride(16) == 4
+    assert not mask[0].any()  # temporally frozen latent frame stays frozen regardless of spatial mask
+    assert not mask[3].any()
+    assert mask[1].all()  # temporally regen + spatially unrestricted -> fully regen
+    assert mask[2].all()
+
+
+def test_build_spatial_latent_regen_mask_narrows_within_regen_region():
+    window = build_regeneration_window(a=10, b=15, video_len=100)
+    pixel_mask = np.zeros((window.num_pixel_frames, 64, 64), dtype=bool)
+    pixel_mask[:, :32, :32] = True  # only the top-left quadrant is editable
+    mask = build_spatial_latent_regen_mask(window, pixel_mask)
+    for t in (1, 2):  # temporally regen latent frames
+        assert mask[t][:2, :2].all()
+        assert not mask[t][:2, 2:].any()
+        assert not mask[t][2:, :].any()
+    for t in (0, 3):  # temporally frozen latent frames -- unaffected by spatial mask
+        assert not mask[t].any()
+
+
+def test_build_spatial_latent_regen_mask_constant_within_patch_blocks():
+    window = build_regeneration_window(a=10, b=15, video_len=100)
+    pixel_mask = np.zeros((window.num_pixel_frames, 64, 64), dtype=bool)
+    pixel_mask[:, 10:54, 10:54] = True  # arbitrary region, not aligned to any pooling boundary
+    mask = build_spatial_latent_regen_mask(window, pixel_mask)
+    for t in range(mask.shape[0]):
+        for i in range(0, mask.shape[1], 2):
+            for j in range(0, mask.shape[2], 2):
+                block = mask[t, i:i + 2, j:j + 2]
+                assert block.all() or not block.any(), (
+                    "mask must be constant within every 2x2 latent block, or the DiT's "
+                    "stride-2 per-token timestep subsample picks an arbitrary corner")
+
+
+def test_build_spatial_latent_regen_mask_rejects_frame_count_mismatch():
+    window = build_regeneration_window(a=10, b=15, video_len=100)
+    pixel_mask = np.ones((window.num_pixel_frames + 1, 64, 64), dtype=bool)
+    try:
+        build_spatial_latent_regen_mask(window, pixel_mask)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError for pixel_mask frame count mismatch")
+
+
+def test_build_spatial_latent_regen_mask_rejects_non_multiple_spatial_size():
+    window = build_regeneration_window(a=10, b=15, video_len=100)
+    pixel_mask = np.ones((window.num_pixel_frames, 50, 50), dtype=bool)  # not a multiple of 32
+    try:
+        build_spatial_latent_regen_mask(window, pixel_mask)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError for spatial size not a multiple of vae_spatial_stride * patch_spatial")
 
 
 def test_out_of_range_frame_indices_still_rejected():
