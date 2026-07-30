@@ -1,0 +1,14 @@
+1. New Prompt 1 : This prompt is tested on every input.
+
+The robotic arm’s grippers grasp the drawer and push it back to the closed position. Throughout the entire sequence, the gripper undergoes no structural deformation, only the opening angle of its jaws changes; the rotational movements of the robotic arm joints strictly adhere to its inherent mechanical structure; and the camera perspective remains completely unchanged.
+
+
+2. New Prompt 2 : This prompt is tested on every input.
+
+The robotic arm pushes the drawer back to the closed position. Throughout the entire sequence, the gripper undergoes no structural deformation, only the opening angle of its jaws changes; the rotational movements of the robotic arm joints strictly adhere to its inherent mechanical structure; and the camera perspective remains completely unchanged.
+
+说明： 
+
+3. New Prompt 3 : This prompt is tested only on the third input.
+
+The robotic arm’s grippers grasp the drawer handle, gently pull the drawer slightly outward, pause briefly, and then push it back to the fully closed position. Throughout the entire sequence, the gripper undergoes no structural deformation; only the opening angle of its jaws changes. The rotational movements of the robotic arm joints strictly follow its inherent mechanical structure, and the camera perspective remains completely unchanged.
