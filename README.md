@@ -76,6 +76,15 @@ Thin wrapper around Wan2.2's own first-frame-conditioned generation
 (`WanTI2V.i2v()`, called as-is, unmodified) -- see `generate_initial_video.py`'s
 module docstring.
 
+Add `--cache_output trajectory.pt` to also save every denoising step's
+latent (keyed by step index) to disk, for later inspection or -- in a
+future script -- resuming denoising from an earlier step with a different
+prompt instead of restarting from scratch (useful when e.g. the robot arm
+comes out deformed and you want to branch off a pre-deformation step). This
+path runs a project-local reimplementation of `WanTI2V.i2v()`
+(`generate_i2v_with_step_cache()`), since the vendored Wan2.2 code has no
+callback hook; without the flag, behavior is unchanged.
+
 ## Step 2: correct a frame range
 
 ```bash
