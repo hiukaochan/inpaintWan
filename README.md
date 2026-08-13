@@ -171,11 +171,143 @@ python frame_range_edit.py \
 This reuses the same crop/seed across prompts and writes one file per prompt
 (`out_<slugified_prompt>.mp4`) so results are directly comparable.
 
+## Step 3: pin a drifting region (`static_range_edit.py`)
+
+Some failures aren't reachable by prompting at all. If Wan generates "robot
+arm closes the drawer" but the whole cabinet slides across the frame, no
+phrasing of "the cabinet stays still" reliably fixes it -- that's a statement
+about pixel geometry, not about semantics.
+
+`static_range_edit.py` applies the constraint to the latent instead, using
+SG-I2V's idea of steering the sampling process rather than the weights (still
+zero-shot -- the model is never fine-tuned). See `SG-I2V-method-notes.md` for
+the method it's derived from. You mark regions that must not move; at
+high-noise denoising steps they're pulled back toward how they looked in a
+frozen anchor frame from before the drift.
+
+### First, measure it (no GPU or checkpoints needed)
+
+```bash
+python tools/measure_drift.py \
+    --video initial.mp4 \
+    --box 620,180,900,540 \
+    --box 40,60,200,260 \
+    --overlay drift.mp4
+```
+
+Worth doing before spending GPU time, because it answers the three questions
+that decide whether the edit can work at all:
+
+- **Is it really translation?** The tool reports the best rigid offset *and*
+  how well the region still matches there. A high match score at a large
+  offset means it slid (fixable); a low score everywhere means it's
+  deforming, which pinning will not fix, and it says so.
+- **Where does it start?** It prints the first frame exceeding `--threshold`
+  and the `--start_frame` to use.
+- **Is the camera moving instead?** Pass a second `--box` on distant
+  background. If every region drifts by the same vector the camera panned,
+  holding one region still is the wrong remedy, and it warns you.
+
+Re-run it on the output afterwards to score the fix.
+
+### Then check where the boxes land (no GPU or checkpoints needed)
+
+```bash
+python tools/draw_box.py \
+    --video initial.mp4 --frame 52 \
+    --box 620,180,900,540 --box 40,60,200,260 \
+    --output boxes.png --grid
+```
+
+Draws each box on one frame and saves a PNG. It draws **two** rectangles per
+box, and the second one is the point:
+
+- **red** -- the box exactly as you typed it;
+- **green** -- the region that will *actually* be pinned.
+
+They differ because `--static_box` is mapped through
+`frame_mapping.pixel_box_to_latent_box`, which rounds **outward** to whole
+16-pixel latent cells. The effective region is therefore always at least as
+large as what you asked for, and up to 15px larger on each side -- so a box
+that looks clear of the drawer front can overlap it once snapped. `--grid`
+overlays the latent lattice to make that visible. The tool also prints the
+latent cell range and how much area the snap added:
+
+```
+  (170, 100, 310, 190)  ->  latent cells x[10:20] y[6:12]  ->  effective pixels (160, 96, 320, 192)  (+2760 px^2)
+```
+
+`--frame` accepts negative indices (`-1` is the last frame). `draw_boxes()` is
+importable if you'd rather annotate frames from your own code.
+
+`static_range_edit.py --visualize_boxes boxes.png` does the same thing on the
+auto-selected anchor frame and exits without loading the model, but it needs
+the full set of edit arguments, so the standalone tool is usually quicker.
+
+```bash
+python static_range_edit.py \
+    --input_video initial.mp4 \
+    --cache_path trajectory.pt \
+    --start_frame 54 --end_frame 120 \
+    --prompt "the robot arm closes the drawer" \
+    --static_box 620,180,900,540 \
+    --static_box 40,60,200,260 \
+    --output pinned.mp4 \
+    --noise_strength 0.4 \
+    --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
+```
+
+Accepts every `frame_range_edit.py` flag (both the SDEdit and `--cache_path`
+paths), plus:
+
+- `--static_box x1,y1,x2,y2` -- repeatable, in source-video pixels.
+  **Prefer several small boxes on unambiguously static structure** (cabinet
+  top, side panel, wall behind) over one large box. A box that straddles
+  something which legitimately moves -- the drawer front -- will fight that
+  motion. This is SG-I2V's own trick for camera control, anchoring static
+  background, repurposed.
+- `--paste_strength` (default `1.0`) -- fraction of the anchor-vs-current
+  difference corrected per step. Lower it if the correction visibly drags
+  the gripper along with the cabinet.
+- `--paste_steps` (default `4`) -- how many denoising steps to correct on.
+  The remaining steps are deliberately left free to harmonise the seam and
+  re-assert anything the correction stepped on, such as an occluding arm.
+- `--feather` (default `2`) -- latent cells over which the box weight ramps
+  in, so the box edge doesn't leave a blocky 16px seam.
+- `--fft_ratio` (default `0.5`) / `--no_fft_restore` -- SG-I2V's
+  high-frequency restore (their Eq. 2), which repairs the artifacts that
+  editing a latent otherwise introduces.
+
+The anchor is chosen automatically: `build_regeneration_window` guarantees
+that latent frame 0 of the window is frozen whenever `--start_frame > 0`, so
+it holds real, un-edited source footage from before the drift. Editing from
+frame 0 leaves no such frame, and the script asks for an explicit
+`--anchor_latent_frame` rather than guessing.
+
+**A caveat worth knowing.** SG-I2V evaluated latent copy-pasting as a
+baseline and rejected it -- it scored the worst FID in their Table 1, with
+Appendix A reporting that the modified latents "fell out of distribution".
+This implementation differs in ways that should matter (it corrects a
+*difference* from an anchor rather than overwriting, preserves each
+position's own noise, and edits a real encoded video rather than initial
+noise -- see `latent_paste.write_delta`), but if results come out
+over-smoothed or artifact-heavy, that's the known failure mode. Compare
+against a plain `frame_range_edit.py` run before concluding it helped.
+
 ## Local, model-free checks
 
 The pixel-frame <-> latent-frame index math (which frames get frozen vs.
-regenerated) is pure Python and can be tested without a GPU or checkpoints:
+regenerated, and where a pixel box lands in the latent grid) and the latent
+correction itself are both pure Python/PyTorch-CPU, testable without a GPU or
+checkpoints:
 
 ```bash
-python inpainting/test_frame_mapping.py
+python test_frame_mapping.py   # 32 tests
+python test_latent_paste.py    # 16 tests
 ```
+
+`tools/measure_drift.py` and `tools/draw_box.py` also run here -- they're
+plain OpenCV (plus the torch-free `frame_mapping.py`) and deliberately do not
+import `frame_range_edit.py`, which would drag in the whole Wan2.2 dependency
+stack. `draw_box.py` owns the shared `read_video_frames`/`parse_box` helpers
+that `measure_drift.py` imports.

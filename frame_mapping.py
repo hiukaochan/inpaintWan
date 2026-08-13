@@ -181,6 +181,122 @@ def build_latent_regen_mask(
     return mask
 
 
+def pixel_box_to_latent_box(
+    box: tuple[int, int, int, int],
+    latent_h: int,
+    latent_w: int,
+    vae_spatial_stride: int = 16,
+) -> tuple[int, int, int, int]:
+    """Map a pixel-space box `(x1, y1, x2, y2)` to latent-grid `(lx1, ly1, lx2, ly2)`.
+
+    Ends are exclusive, matching Python slicing. The box is rounded *outward*
+    (floor the start, ceil the end) so every latent cell the pixel box touches
+    is included -- a box that covers even one pixel of a cell affects that
+    cell's encoded content.
+
+    The divisor is `vae_spatial_stride` (16 for ti2v-5B), NOT the 32 used by
+    `build_spatial_latent_regen_mask`. That function pools at
+    `vae_spatial_stride * patch_spatial` only because the mask it returns is
+    consumed by the DiT's stride-`patch_spatial` per-token timestep subsample
+    (see its docstring). A direct write into the latent tensor never goes
+    through that path, so it is free to address individual latent cells --
+    which is what makes feathering (`build_feathered_box_weight`) possible.
+    """
+    x1, y1, x2, y2 = box
+    if not (x1 < x2 and y1 < y2):
+        raise ValueError(f"box must have x1<x2 and y1<y2, got {box}")
+
+    lx1 = max(0, x1 // vae_spatial_stride)
+    ly1 = max(0, y1 // vae_spatial_stride)
+    lx2 = min(latent_w, -(-x2 // vae_spatial_stride))  # ceil
+    ly2 = min(latent_h, -(-y2 // vae_spatial_stride))
+
+    if lx1 >= lx2 or ly1 >= ly2:
+        raise ValueError(
+            f"box {box} maps to an empty latent region on a {latent_h}x{latent_w} grid "
+            f"(stride {vae_spatial_stride}) -- it is either off-grid or smaller than one latent cell")
+    return lx1, ly1, lx2, ly2
+
+
+def anchor_latent_frame(
+    window: FrameRangeWindow,
+    temporal_stride: int = DEFAULT_TEMPORAL_STRIDE,
+) -> int | None:
+    """Index of the last frozen latent frame before the regenerate region.
+
+    This is the source of truth for "what did the scene look like before the
+    drift": a latent frame the edit is guaranteed never to touch, holding real
+    encoded source footage. `build_regeneration_window` makes one exist by
+    construction whenever `a > 0` -- it sets `window_start = a - 2` and
+    `edit_start = a - 1`, and latent frame 0 is a causal singleton covering
+    only local pixel 0, so latent frame 0 is always frozen.
+
+    Returns `None` when the regenerate region starts at latent frame 0 (i.e.
+    `a == 0`), where no such frame exists and the caller must supply its own
+    reference.
+    """
+    mask = build_latent_regen_mask(window, temporal_stride)
+    first_regen = next((i for i, regen in enumerate(mask) if regen), None)
+    if first_regen is None:
+        raise ValueError("window has no regenerated latent frames")
+    return None if first_regen == 0 else first_regen - 1
+
+
+def build_feathered_box_weight(
+    boxes: list[tuple[int, int, int, int]],
+    latent_h: int,
+    latent_w: int,
+    vae_spatial_stride: int = 16,
+    feather: int = 2,
+) -> np.ndarray:
+    """A `(latent_h, latent_w)` float weight map in [0, 1], 1 inside the boxes.
+
+    A hard rectangular write leaves a seam on the latent grid that the VAE
+    decoder turns into a visible `vae_spatial_stride`-pixel blocky edge. This
+    ramps the weight from 0 to 1 over `feather` latent cells at each box
+    border with a cosine (raised-cosine) profile, which has a continuous first
+    derivative and so leaves no ridge for the decoder to sharpen.
+
+    Overlapping boxes take the element-wise maximum, so an overlap is fully
+    weighted rather than double-counted.
+
+    `feather=0` gives hard edges. Note that the ramp grows *inward* from the
+    box border, so a box narrower than `2 * feather` cells never reaches
+    weight 1 anywhere -- deliberate, since a box that small has no interior to
+    protect.
+    """
+    weight = np.zeros((latent_h, latent_w), dtype=np.float32)
+    if feather < 0:
+        raise ValueError(f"feather must be >= 0, got {feather}")
+
+    for box in boxes:
+        lx1, ly1, lx2, ly2 = pixel_box_to_latent_box(box, latent_h, latent_w, vae_spatial_stride)
+        bh, bw = ly2 - ly1, lx2 - lx1
+
+        ramp_y = _cosine_ramp(bh, feather)
+        ramp_x = _cosine_ramp(bw, feather)
+        patch = ramp_y[:, None] * ramp_x[None, :]
+
+        weight[ly1:ly2, lx1:lx2] = np.maximum(weight[ly1:ly2, lx1:lx2], patch)
+
+    return weight
+
+
+def _cosine_ramp(length: int, feather: int) -> np.ndarray:
+    """1-D window of `length` cells: raised-cosine ramp up over `feather`
+    cells, flat 1 in the middle, ramp back down. Degrades gracefully when
+    `length < 2 * feather` (the plateau just disappears)."""
+    w = np.ones(length, dtype=np.float32)
+    if feather == 0:
+        return w
+    # +1 so the first cell inside the box gets a nonzero weight rather than 0
+    ramp = 0.5 * (1.0 - np.cos(np.pi * (np.arange(feather) + 1) / (feather + 1)))
+    n = min(feather, length)
+    w[:n] = np.minimum(w[:n], ramp[:n])
+    w[length - n:] = np.minimum(w[length - n:], ramp[:n][::-1])
+    return w
+
+
 def build_spatial_latent_regen_mask(
     window: FrameRangeWindow,
     pixel_mask: np.ndarray,

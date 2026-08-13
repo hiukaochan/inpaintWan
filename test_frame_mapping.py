@@ -6,11 +6,14 @@ Run with: python inpainting/test_frame_mapping.py
 import numpy as np
 
 from frame_mapping import (
+    anchor_latent_frame,
+    build_feathered_box_weight,
     build_latent_regen_mask,
     build_regeneration_window,
     build_spatial_latent_regen_mask,
     latent_frame_to_pixel_range,
     num_latent_frames,
+    pixel_box_to_latent_box,
 )
 
 
@@ -240,6 +243,95 @@ def test_build_spatial_latent_regen_mask_rejects_non_multiple_spatial_size():
         pass
     else:
         raise AssertionError("expected ValueError for spatial size not a multiple of vae_spatial_stride * patch_spatial")
+
+
+def test_pixel_box_to_latent_box_divides_by_vae_stride_not_patch_pool():
+    # 1280x704 -> 80x44 latent grid. A direct latent write addresses individual
+    # latent cells (stride 16), unlike build_spatial_latent_regen_mask's 32-px
+    # pooling, which exists only for the DiT's stride-2 timestep subsample.
+    assert pixel_box_to_latent_box((160, 96, 320, 192), latent_h=44, latent_w=80) == (10, 6, 20, 12)
+
+
+def test_pixel_box_to_latent_box_rounds_outward():
+    # Any latent cell the pixel box touches must be included, so start floors
+    # and end ceils -- a box covering one pixel of a cell affects that cell.
+    assert pixel_box_to_latent_box((17, 17, 33, 33), latent_h=44, latent_w=80) == (1, 1, 3, 3)
+
+
+def test_pixel_box_to_latent_box_clips_to_grid():
+    lx1, ly1, lx2, ly2 = pixel_box_to_latent_box((-50, -50, 5000, 5000), latent_h=44, latent_w=80)
+    assert (lx1, ly1, lx2, ly2) == (0, 0, 80, 44)
+
+
+def test_pixel_box_to_latent_box_rejects_degenerate_and_offgrid():
+    for box in [(10, 10, 10, 20), (10, 10, 20, 10), (20, 10, 10, 20)]:
+        try:
+            pixel_box_to_latent_box(box, latent_h=44, latent_w=80)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"expected ValueError for degenerate box {box}")
+
+    try:  # entirely off the right edge of the grid
+        pixel_box_to_latent_box((5000, 10, 5010, 20), latent_h=44, latent_w=80)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError for a box that maps to an empty latent region")
+
+
+def test_anchor_latent_frame_is_the_frozen_frame_before_the_edit():
+    # For a > 0 the causal singleton guarantees latent frame 0 is frozen, so
+    # the anchor is real pre-drift source footage that the edit never touches.
+    for a, b, video_len in [(30, 60, 121), (20, 40, 121), (50, 120, 121), (10, 15, 100)]:
+        window = build_regeneration_window(a, b, video_len)
+        mask = build_latent_regen_mask(window)
+        idx = anchor_latent_frame(window)
+        assert idx == 0, f"a={a} b={b}: expected anchor at latent frame 0, got {idx}"
+        assert mask[idx] is False, "the anchor must be a frozen latent frame"
+        assert mask[idx + 1] is True, "the anchor must be immediately before the regen region"
+
+
+def test_anchor_latent_frame_is_none_when_edit_starts_at_frame_zero():
+    window = build_regeneration_window(a=0, b=5, video_len=100)
+    assert anchor_latent_frame(window) is None
+
+
+def test_feathered_box_weight_is_one_in_the_interior_and_zero_outside():
+    w = build_feathered_box_weight([(160, 96, 480, 288)], latent_h=44, latent_w=80, feather=2)
+    # latent box is (10, 6, 30, 18); with feather=2 the interior stays at 1
+    assert w[6 + 2:18 - 2, 10 + 2:30 - 2].min() == 1.0
+    assert w[:6, :].max() == 0.0
+    assert w[18:, :].max() == 0.0
+    assert w[:, :10].max() == 0.0
+    assert w[:, 30:].max() == 0.0
+
+
+def test_feathered_box_weight_ramps_monotonically_at_the_border():
+    w = build_feathered_box_weight([(160, 96, 480, 288)], latent_h=44, latent_w=80, feather=3)
+    row = w[12, 10:30]  # a horizontal cut through the middle of the box
+    assert 0.0 < row[0] < row[1] < row[2] < 1.0, "leading edge must ramp up smoothly"
+    assert 0.0 < row[-1] < row[-2] < row[-3] < 1.0, "trailing edge must ramp down smoothly"
+
+
+def test_feathered_box_weight_zero_feather_is_a_hard_box():
+    w = build_feathered_box_weight([(160, 96, 480, 288)], latent_h=44, latent_w=80, feather=0)
+    assert set(np.unique(w)) == {0.0, 1.0}
+    assert w[6:18, 10:30].all()
+
+
+def test_feathered_box_weight_overlapping_boxes_take_the_max():
+    boxes = [(160, 96, 480, 288), (320, 96, 640, 288)]  # overlap in x
+    w = build_feathered_box_weight(boxes, latent_h=44, latent_w=80, feather=2)
+    assert w.max() <= 1.0, "overlap must not accumulate past 1"
+    # the seam between the two boxes is interior to their union -> fully weighted
+    assert w[12, 20] == 1.0
+
+
+def test_feathered_box_weight_survives_a_box_narrower_than_the_feather():
+    w = build_feathered_box_weight([(160, 96, 192, 128)], latent_h=44, latent_w=80, feather=4)
+    assert w.max() <= 1.0
+    assert w.max() > 0.0  # degrades to an all-ramp bump rather than vanishing
 
 
 def test_out_of_range_frame_indices_still_rejected():
