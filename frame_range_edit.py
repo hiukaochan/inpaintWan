@@ -293,9 +293,166 @@ class WanFrameRangeEditor:
         video = pipe.vae.decode([latent])[0]
         return vae_output_to_frames(video)
 
+    def edit_from_cache(
+        self,
+        cache_path: Path,
+        regen_mask: np.ndarray,
+        prompt: str,
+        n_prompt: str = "",
+        guide_scale: float = 5.0,
+        seed: int = -1,
+        resume_noise_pct: float = 0.4,
+    ) -> np.ndarray:
+        """Resume denoising from a real generation-time latent instead of
+
+        `edit()`'s SDEdit fresh-noise formula. `cache_path` must be a `.pt`
+        file written by `generate_initial_video.py --cache_output` for the
+        *exact* video passed to `main()` as `--input_video` -- the cache no
+        longer matches a video's pixels once any other edit has been
+        applied to it.
+
+        Unlike `edit()`, this always operates on the whole cached
+        video-length latent, never a cropped window: Wan2.2's causal VAE has
+        exactly one singleton latent frame, at true pixel 0 of the whole
+        video, so a re-encoded crop's own "position 0" doesn't correspond to
+        anything in the originally cached latent unless the crop starts at
+        true frame 0. `regen_mask` must therefore be shaped for the whole
+        cached video's latent, not a cropped window (see `main()`).
+        """
+        pipe = self.pipe
+        device = self.device
+
+        trajectory_tape = torch.load(cache_path, map_location="cpu")
+        if "_meta" not in trajectory_tape:
+            raise ValueError(
+                f"{cache_path} has no '_meta' entry -- re-generate it with the current "
+                f"generate_initial_video.py --cache_output")
+        meta = trajectory_tape["_meta"]
+        num_steps = len(trajectory_tape) - 1  # exclude "_meta"
+        if num_steps != meta["sampling_steps"]:
+            raise ValueError(
+                f"cache has {num_steps} step entries but _meta says sampling_steps="
+                f"{meta['sampling_steps']} -- cache file looks corrupted or truncated")
+
+        z = trajectory_tape[num_steps - 1]["latent"].to(device=device, dtype=torch.float32)
+
+        mask = torch.tensor(regen_mask, dtype=z.dtype, device=device)
+        if mask.shape != z.shape[1:]:
+            raise ValueError(
+                f"regen_mask has shape {tuple(mask.shape)} but the cached latent has shape "
+                f"{tuple(z.shape[1:])} -- regen_mask must cover the whole cached video, and "
+                f"--input_video must be the exact video this cache was generated for")
+        mask2 = mask.unsqueeze(0).expand_as(z)
+
+        seed = seed if seed >= 0 else torch.seed()
+        seed_g = torch.Generator(device=device)
+        seed_g.manual_seed(seed)
+
+        ph, pw = pipe.patch_size[1], pipe.patch_size[2]
+        seq_len = math.ceil((z.shape[1] * z.shape[2] * z.shape[3]) / (ph * pw) / pipe.sp_size) * pipe.sp_size
+
+        if n_prompt == "":
+            n_prompt = pipe.sample_neg_prompt
+        if not pipe.t5_cpu:
+            pipe.text_encoder.model.to(device)
+            context = pipe.text_encoder([prompt], device)
+            context_null = pipe.text_encoder([n_prompt], device)
+            if self.offload_model:
+                pipe.text_encoder.model.cpu()
+        else:
+            context = pipe.text_encoder([prompt], torch.device("cpu"))
+            context_null = pipe.text_encoder([n_prompt], torch.device("cpu"))
+            context = [c.to(device) for c in context]
+            context_null = [c.to(device) for c in context_null]
+
+        if not (0.0 < resume_noise_pct <= 1.0):
+            raise ValueError(f"resume_noise_pct must be in (0, 1], got {resume_noise_pct}")
+
+        sample_solver = meta["sample_solver"]
+        if sample_solver == "unipc":
+            scheduler = FlowUniPCMultistepScheduler(
+                num_train_timesteps=pipe.num_train_timesteps, shift=1, use_dynamic_shifting=False)
+            scheduler.set_timesteps(meta["sampling_steps"], device=device, shift=meta["shift"])
+        elif sample_solver == "dpm++":
+            scheduler = FlowDPMSolverMultistepScheduler(
+                num_train_timesteps=pipe.num_train_timesteps, shift=1, use_dynamic_shifting=False)
+            sampling_sigmas = get_sampling_sigmas(meta["sampling_steps"], meta["shift"])
+            retrieve_timesteps(scheduler, device=device, sigmas=sampling_sigmas)
+        else:
+            raise NotImplementedError(f"unsupported solver: {sample_solver}")
+
+        # sigmas[i+1] is (approximately) the noise level of the cached latent
+        # at step i, i.e. the state produced right after that step ran
+        sigmas = scheduler.sigmas.to(device=device, dtype=z.dtype)
+        candidates = sigmas[1:num_steps + 1]
+        step_idx = int(torch.argmin((candidates - resume_noise_pct).abs()).item())
+        step_idx = min(step_idx, num_steps - 2)  # keep at least one step to run
+
+        print(f"[edit_from_cache] resume_noise_pct={resume_noise_pct} -> cached step {step_idx} "
+              f"(timestep={trajectory_tape[step_idx]['timestep']}, sigma~{candidates[step_idx].item():.4f}), "
+              f"{num_steps - (step_idx + 1)} steps remaining")
+
+        latent = trajectory_tape[step_idx]["latent"].to(device=device, dtype=torch.float32)
+        latent = (1.0 - mask2) * z + mask2 * latent
+        timesteps = scheduler.timesteps[step_idx + 1:]
+
+        arg_c = {"context": context, "seq_len": seq_len}
+        arg_null = {"context": context_null, "seq_len": seq_len}
+
+        no_sync = getattr(pipe.model, "no_sync", _noop)
+        if self.offload_model or pipe.init_on_cpu:
+            pipe.model.to(device)
+            torch.cuda.empty_cache()
+
+        with torch.amp.autocast("cuda", dtype=pipe.param_dtype), torch.no_grad(), no_sync():
+            for t in timesteps:
+                latent_model_input = [latent]
+                timestep = torch.stack([t]).to(device)
+
+                temp_ts = (mask2[0][:, ::2, ::2] * timestep).flatten()
+                temp_ts = torch.cat([temp_ts, temp_ts.new_ones(seq_len - temp_ts.size(0)) * timestep])
+                timestep_tok = temp_ts.unsqueeze(0)
+
+                noise_pred_cond = pipe.model(latent_model_input, t=timestep_tok, **arg_c)[0]
+                if self.offload_model:
+                    torch.cuda.empty_cache()
+                noise_pred_uncond = pipe.model(latent_model_input, t=timestep_tok, **arg_null)[0]
+                if self.offload_model:
+                    torch.cuda.empty_cache()
+                noise_pred = noise_pred_uncond + guide_scale * (noise_pred_cond - noise_pred_uncond)
+
+                temp_x0 = scheduler.step(
+                    noise_pred.unsqueeze(0), t, latent.unsqueeze(0), return_dict=False, generator=seed_g)[0]
+                latent = temp_x0.squeeze(0)
+                latent = (1.0 - mask2) * z + mask2 * latent
+
+        if self.offload_model:
+            pipe.model.cpu()
+            torch.cuda.synchronize()
+            torch.cuda.empty_cache()
+
+        video = pipe.vae.decode([latent])[0]
+        return vae_output_to_frames(video)
+
 
 def slugify(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")[:60]
+
+
+def full_video_edit_bounds(a: int, b: int, video_len: int) -> tuple[int, int]:
+    """edit_start/edit_end for `edit_from_cache`'s whole-video "window".
+
+    Same `[a-1, b+1]`-unless-at-a-boundary rule `build_regeneration_window`
+    uses, minus its crop-edge `CONTEXT_MARGIN`/`context_blocks` requirements
+    -- there's no crop here, so no minimum-context validation is needed.
+    """
+    if a > b:
+        raise ValueError("a must be <= b")
+    if not (0 <= a < video_len) or not (0 <= b < video_len):
+        raise ValueError(f"a and b must be valid frame indices in [0, {video_len - 1}]")
+    edit_start = 0 if a == 0 else a - 1
+    edit_end = (video_len - 1) if b == video_len - 1 else b + 1
+    return edit_start, edit_end
 
 
 def parse_args():
@@ -322,11 +479,20 @@ def parse_args():
     ap.add_argument("--shift", type=float, default=5.0)
     ap.add_argument(
         "--noise_strength", type=float, default=0.6,
-        help="SDEdit strength in (0, 1]: how much of the edit region is re-noised/regenerated. "
-             "1.0 = regenerate from scratch; lower values correct the existing content instead of replacing it")
+        help="how much of the edit region is regenerated, in (0, 1]. Without --cache_path: SDEdit "
+             "strength -- 1.0 regenerates from scratch, lower values re-noise the existing content less. "
+             "With --cache_path: how far back into the real generation trajectory to resume from -- "
+             "e.g. 0.4 resumes from the cached step closest to 40% noise, then re-denoises with --prompt")
+    ap.add_argument(
+        "--cache_path", type=Path, default=None,
+        help="resume denoising from a per-step latent cache written by generate_initial_video.py "
+             "--cache_output, instead of SDEdit's fresh-noise re-noising. --input_video must be the "
+             "exact video that cache was generated for -- it no longer matches after any other edit. "
+             "Operates on the whole video's latent (no window crop), so --context_blocks is unused")
     ap.add_argument(
         "--context_blocks", type=int, default=1,
-        help="number of guaranteed-frozen 4-frame latent blocks required immediately after the edit region")
+        help="number of guaranteed-frozen 4-frame latent blocks required immediately after the edit "
+             "region; unused with --cache_path (no crop, so no crop-edge context is needed)")
     ap.add_argument(
         "--edit_mode", type=str, default="full", choices=["full", "spatial"],
         help="'full' regenerates entire frames in the range (default). 'spatial' regenerates only "
@@ -356,6 +522,47 @@ def main():
     ]
 
     full_frames, fps = read_video_frames(args.input_video)
+    cfg = WAN_CONFIGS[args.task]
+
+    editor = WanFrameRangeEditor(
+        checkpoint_dir=args.ckpt_dir, task=args.task, device_id=args.device_id,
+        t5_cpu=args.t5_cpu, offload_model=not args.no_offload)
+
+    if args.cache_path is not None:
+        # Whole-video path: no crop, no resize -- the cached latent already
+        # covers the video at its native (VAE-aligned) resolution.
+        edit_start, edit_end = full_video_edit_bounds(args.start_frame, args.end_frame, len(full_frames))
+        window = FrameRangeWindow(0, len(full_frames) - 1, edit_start, edit_end, pad_end=0)
+        temporal_mask = build_latent_regen_mask(window)
+
+        h, w = full_frames.shape[1:3]
+        if args.edit_mode == "spatial":
+            x1, y1, x2, y2 = parse_box(args.mask_box)
+            pixel_mask = np.zeros((full_frames.shape[0], h, w), dtype=bool)
+            pixel_mask[:, y1:y2, x1:x2] = True
+            regen_mask = build_spatial_latent_regen_mask(
+                window, pixel_mask, vae_spatial_stride=cfg.vae_stride[1], patch_spatial=cfg.patch_size[1])
+        else:
+            h_latent, w_latent = h // cfg.vae_stride[1], w // cfg.vae_stride[2]
+            regen_mask = np.broadcast_to(
+                np.array(temporal_mask, dtype=bool)[:, None, None], (len(temporal_mask), h_latent, w_latent))
+
+        for prompt in prompts:
+            edited_video = editor.edit_from_cache(
+                args.cache_path, regen_mask, prompt,
+                n_prompt=args.negative_prompt, guide_scale=args.guide_scale,
+                seed=args.seed, resume_noise_pct=args.noise_strength)
+
+            full_edited = splice_edited_frames(full_frames, edited_video, window)
+            assert_outside_range_intact(full_frames, full_edited, window.edit_start, window.edit_end)
+
+            out_path = args.output
+            if len(prompts) > 1:
+                out_path = args.output.with_name(f"{args.output.stem}_{slugify(prompt)}{args.output.suffix}")
+            write_video_frames(out_path, full_edited, fps)
+            print(f"wrote {out_path}")
+        return
+
     window = build_regeneration_window(
         args.start_frame, args.end_frame, len(full_frames), context_blocks=args.context_blocks)
     temporal_mask = build_latent_regen_mask(window)
@@ -373,7 +580,6 @@ def main():
     valid_h = round_down_to_multiple(orig_h, SPATIAL_MULTIPLE)
     model_input_frames = resize_frames(raw_window_frames, valid_w, valid_h)
 
-    cfg = WAN_CONFIGS[args.task]
     if args.edit_mode == "spatial":
         x1, y1, x2, y2 = parse_box(args.mask_box)
         pixel_mask = np.zeros((raw_window_frames.shape[0], orig_h, orig_w), dtype=bool)
@@ -385,10 +591,6 @@ def main():
         h_latent, w_latent = valid_h // cfg.vae_stride[1], valid_w // cfg.vae_stride[2]
         regen_mask = np.broadcast_to(
             np.array(temporal_mask, dtype=bool)[:, None, None], (len(temporal_mask), h_latent, w_latent))
-
-    editor = WanFrameRangeEditor(
-        checkpoint_dir=args.ckpt_dir, task=args.task, device_id=args.device_id,
-        t5_cpu=args.t5_cpu, offload_model=not args.no_offload)
 
     for prompt in prompts:
         edited_window = editor.edit(

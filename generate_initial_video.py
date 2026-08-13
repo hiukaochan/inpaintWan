@@ -218,8 +218,9 @@ def parse_args():
     ap.add_argument("--no_offload", action="store_true")
     ap.add_argument(
         "--cache_output", type=Path, default=None,
-        help="if given, also save every denoising step's latent (keyed by step index) to this .pt path, "
-             "via torch.save -- for later inspection or resuming denoising from an earlier step")
+        help="if given, also save every denoising step's latent (keyed by step index, plus a '_meta' "
+             "entry with the scheduler config) to this .pt path, via torch.save -- for later inspection "
+             "or resuming denoising from an earlier step, e.g. via frame_range_edit.py --cache_path")
     return ap.parse_args()
 
 
@@ -265,8 +266,14 @@ def main():
             offload_model=not args.no_offload,
         )
 
+        trajectory_tape["_meta"] = {
+            "sampling_steps": args.num_steps,
+            "shift": args.shift,
+            "sample_solver": args.sample_solver,
+            "frame_num": frame_num,
+        }
         torch.save(trajectory_tape, args.cache_output)
-        print(f"wrote {args.cache_output} ({len(trajectory_tape)} steps)")
+        print(f"wrote {args.cache_output} ({len(trajectory_tape) - 1} steps)")
     else:
         video = pipe.generate(
             args.prompt,

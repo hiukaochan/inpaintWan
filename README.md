@@ -77,11 +77,12 @@ Thin wrapper around Wan2.2's own first-frame-conditioned generation
 module docstring.
 
 Add `--cache_output trajectory.pt` to also save every denoising step's
-latent (keyed by step index) to disk, for later inspection or -- in a
-future script -- resuming denoising from an earlier step with a different
-prompt instead of restarting from scratch (useful when e.g. the robot arm
-comes out deformed and you want to branch off a pre-deformation step). This
-path runs a project-local reimplementation of `WanTI2V.i2v()`
+latent (keyed by step index, plus a `_meta` entry with the scheduler config)
+to disk, for later inspection or -- via `frame_range_edit.py --cache_path`,
+see Step 2 below -- resuming denoising from an earlier step with a
+different prompt instead of restarting from scratch (useful when e.g. the
+robot arm comes out deformed and you want to branch off a pre-deformation
+step). This path runs a project-local reimplementation of `WanTI2V.i2v()`
 (`generate_i2v_with_step_cache()`), since the vendored Wan2.2 code has no
 callback hook; without the flag, behavior is unchanged.
 
@@ -120,6 +121,38 @@ python frame_range_edit.py \
   frame 0 or after the last frame to freeze.
 - Add `--t5_cpu` / drop `--no_offload` flags to tune VRAM usage the same way
   Wan2.2's own `generate.py` does.
+
+### Resuming from the real generation trajectory instead of SDEdit
+
+If `initial.mp4` was generated with `generate_initial_video.py --cache_output
+trajectory.pt`, pass that cache to correct a deformation by resuming
+denoising from a real intermediate state of that same generation run,
+instead of SDEdit's approximation (re-noising a re-encoded crop with fresh
+random noise):
+
+```bash
+python frame_range_edit.py \
+    --input_video initial.mp4 \
+    --cache_path trajectory.pt \
+    --start_frame 54 --end_frame 120 \
+    --prompt "..." \
+    --output out.mp4 \
+    --noise_strength 0.4 \
+    --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
+```
+
+- `--input_video` must be the *exact* video that cache was generated for --
+  it no longer matches after any other edit has been applied to it.
+- `--noise_strength` is reused here as "how far back to resume": `0.4`
+  resumes from whichever cached step is closest to 40% noise remaining, then
+  re-denoises the rest with `--prompt`. Try a few values (e.g. `0.1`-`0.4`)
+  to find one that resumes from before the deformation appeared.
+- This mode always operates on the *whole* video's latent, never a cropped
+  window -- Wan2.2's causal VAE has exactly one singleton latent frame, at
+  true pixel 0 of the whole video, so a re-encoded crop's own "frame 0"
+  wouldn't line up with the originally cached latent unless the crop starts
+  at the real start of the video. `--context_blocks` is therefore unused
+  in this mode.
 
 ### Trying multiple prompt phrasings (step 3)
 
