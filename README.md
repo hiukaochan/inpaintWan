@@ -29,8 +29,7 @@ conda activate wan22
 pip install -r requirements.txt   # installs Wan2.2/requirements.txt
 
 # TI2V-5B checkpoint (~5B params, runs on a single 24GB GPU at 720P)
-huggingface-cli download Wan-AI/Wan2.2-TI2V-5B \
-    --local-dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
+HF_HUB_OFFLINE=0 TRANSFORMERS_OFFLINE=0 hf download Wan-AI/Wan2.2-TI2V-5B --local-dir ./Wan2.2/checkpoints/Wan2.2-TI2V-5B
 ```
 
 ### Smoke-test the stock install
