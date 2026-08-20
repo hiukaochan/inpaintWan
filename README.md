@@ -52,7 +52,7 @@ torchrun --nproc_per_node=4 generate.py --task ti2v-5B --size 1280*704 \
 ``` -->
 ```
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-CUDA_VISIBLE_DEVICES=1 \
+CUDA_VISIBLE_DEVICES=0 \
 python generate.py --task ti2v-5B --size 1280*704 \
     --ckpt_dir checkpoints/Wan2.2-TI2V-5B \
     --offload_model True --convert_model_dtype --t5_cpu \
@@ -65,8 +65,8 @@ python generate.py --task ti2v-5B --size 1280*704 \
 ```bash
 cd inpainting
 python generate_initial_video.py \
-    --image first_frame.jpg \
-    --prompt "robot arm picking up an apple" \
+    --image input/episode_000000.png \
+    --prompt "The robotic arm closes its grippers and pushes the drawer back to the closed position. Throughout the entire sequence, the gripper undergoes no structural deformation, only the opening angle of its jaws changes; the rotational movements of the robotic arm joints strictly adhere to its inherent mechanical structure; and the camera perspective remains completely unchanged." \
     --output initial.mp4 \
     --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
 ```
@@ -236,8 +236,22 @@ latent cell range and how much area the snap added:
   (170, 100, 310, 190)  ->  latent cells x[10:20] y[6:12]  ->  effective pixels (160, 96, 320, 192)  (+2760 px^2)
 ```
 
-`--frame` accepts negative indices (`-1` is the last frame). `draw_boxes()` is
-importable if you'd rather annotate frames from your own code.
+It also previews object trajectories, using the same flag names the editor
+takes, so a path can be checked before any GPU time is spent:
+
+```bash
+python tools/draw_box.py --video initial.mp4 --frame 52 \
+    --object_box 620,180,900,540 --move_to 320,160 --output path.png
+# or: --object_traj traj.npy
+```
+
+Blue is the start box and the centre track, amber is where it ends. It prints
+the displacement in latent cells and warns when a path is too small to be
+expressible at all.
+
+`--frame` accepts negative indices (`-1` is the last frame). `draw_boxes()`
+and `draw_trajectory()` are importable if you'd rather annotate frames from
+your own code.
 
 `static_range_edit.py --visualize_boxes boxes.png` does the same thing on the
 auto-selected anchor frame and exits without loading the model, but it needs
@@ -277,6 +291,44 @@ paths), plus:
   high-frequency restore (their Eq. 2), which repairs the artifacts that
   editing a latent otherwise introduces.
 
+### Moving an object along a trajectory
+
+The same script also does the non-zero-trajectory case: give a box a path and
+its content is carried along it. Both modes compose, so you can pin the
+cabinet *and* move the gripper in one run.
+
+```bash
+# straight-line sweep, no file needed -- 'dx,dy' is a DISPLACEMENT
+python static_range_edit.py ... \
+    --object_box 620,180,900,540 --move_to 320,160 \
+    --static_box 40,60,200,260
+
+# or SG-I2V's own [N, 2+F, 2] format, so their examples/ transfer unchanged
+python static_range_edit.py ... --object_traj traj.npy
+```
+
+- `--object_strength` (default `1.0`) -- how strongly to move the object.
+- `--vacated_fill` (default `1.0`) -- what happens where the object moved
+  *away from*. This is the part with no obviously right answer. At `1.0` the
+  content term in those cells is removed entirely (keeping their own noise),
+  so the denoiser refills them from surrounding context and the prompt; at
+  `0.0` nothing is written there. **Run `0.0` first** to see how bad the ghost
+  is, then `1.0` to see whether softening actually clears it -- that contrast
+  is the only honest way to tell whether this is working.
+
+Two constraints worth knowing before authoring a path:
+
+- **Motion is quantised to 16px latent cells.** Sub-16px motion does not
+  register at all. Wan's temporal stride of 4 helps (each *latent* frame spans
+  4 pixel frames, so per-latent-frame displacement is 4x the per-frame
+  motion), but a slow path still staircases. Both `tools/draw_box.py` and the
+  editor print the latent-cell displacement and warn when a path is too small
+  to express.
+- **Content is relocated, not duplicated-then-erased.** `--vacated_fill`
+  removes the *bias* toward redrawing the object at its old position; it
+  cannot guarantee the model won't put it back where context strongly implies
+  it (an arm still attached to it, say).
+
 The anchor is chosen automatically: `build_regeneration_window` guarantees
 that latent frame 0 of the window is frozen whenever `--start_frame > 0`, so
 it holds real, un-edited source footage from before the drift. Editing from
@@ -301,8 +353,8 @@ correction itself are both pure Python/PyTorch-CPU, testable without a GPU or
 checkpoints:
 
 ```bash
-python test_frame_mapping.py   # 32 tests
-python test_latent_paste.py    # 16 tests
+python test_frame_mapping.py   # 46 tests
+python test_latent_paste.py    # 26 tests
 ```
 
 `tools/measure_drift.py` and `tools/draw_box.py` also run here -- they're

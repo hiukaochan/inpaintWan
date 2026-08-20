@@ -5,15 +5,23 @@ Run with: python inpainting/test_frame_mapping.py
 
 import numpy as np
 
+import tempfile
+from pathlib import Path
+
 from frame_mapping import (
     anchor_latent_frame,
     build_feathered_box_weight,
     build_latent_regen_mask,
     build_regeneration_window,
     build_spatial_latent_regen_mask,
+    feathered_map_from_latent_box,
     latent_frame_to_pixel_range,
+    linear_trajectory,
+    load_trajectory_npy,
     num_latent_frames,
     pixel_box_to_latent_box,
+    resample_trajectory,
+    trajectory_to_latent_plan,
 )
 
 
@@ -332,6 +340,198 @@ def test_feathered_box_weight_survives_a_box_narrower_than_the_feather():
     w = build_feathered_box_weight([(160, 96, 192, 128)], latent_h=44, latent_w=80, feather=4)
     assert w.max() <= 1.0
     assert w.max() > 0.0  # degrades to an all-ramp bump rather than vanishing
+
+
+LAT_H, LAT_W = 44, 80  # 704x1280 at vae_stride 16
+
+
+def _traj_window():
+    """A realistic window: edit frames 30..60 of a 121-frame video."""
+    return build_regeneration_window(a=30, b=60, video_len=121)
+
+
+def _plan_for(window, boxes, feather=0):
+    targets = [i for i, regen in enumerate(build_latent_regen_mask(window)) if regen]
+    return trajectory_to_latent_plan(
+        window, boxes, anchor_latent_idx=0, target_frames=targets,
+        latent_h=LAT_H, latent_w=LAT_W, feather=feather)
+
+
+def test_load_trajectory_npy_matches_sgi2v_convention():
+    # [N, 2+F, 2]: two corner rows as (w,h), then F centres as (w,h)
+    arr = np.array([[[100, 200], [300, 400],          # box corners
+                     [200, 300], [220, 300], [260, 340]]], dtype=np.float32)  # 3 centres
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "traj.npy"
+        np.save(p, arr)
+        boxes = load_trajectory_npy(p, orig_size=(1000, 1000), target_size=(1000, 1000))
+    assert len(boxes) == 1 and boxes[0].shape == (3, 4)
+    # frame 0 is the box itself; later frames are translated by the centre delta
+    assert np.allclose(boxes[0][0], [100, 200, 300, 400])
+    assert np.allclose(boxes[0][1], [120, 200, 320, 400])   # centre moved +20 in w
+    assert np.allclose(boxes[0][2], [160, 240, 360, 440])   # +60 in w, +40 in h
+
+
+def test_load_trajectory_npy_rescales_coordinates():
+    arr = np.array([[[100, 100], [200, 200], [150, 150], [150, 150]]], dtype=np.float32)
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "traj.npy"
+        np.save(p, arr)
+        boxes = load_trajectory_npy(p, orig_size=(1000, 500), target_size=(500, 500))
+    assert np.allclose(boxes[0][0], [50, 100, 100, 200])  # x halved, y unchanged
+
+
+def test_load_trajectory_npy_rejects_bad_shape():
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "bad.npy"
+        np.save(p, np.zeros((4, 2), dtype=np.float32))
+        try:
+            load_trajectory_npy(p, (100, 100), (100, 100))
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("expected ValueError for a non [N, 2+F, 2] array")
+
+
+def test_linear_trajectory_endpoints_and_displacement():
+    boxes = linear_trajectory((100, 100, 200, 200), move_to=(80, -40), num_frames=5)
+    assert boxes.shape == (5, 4)
+    assert np.allclose(boxes[0], [100, 100, 200, 200])           # starts at the given box
+    assert np.allclose(boxes[-1], [180, 60, 280, 160])           # ends displaced by the full move
+    widths = boxes[:, 2] - boxes[:, 0]
+    assert np.allclose(widths, 100), "a linear sweep must not resize the box"
+
+
+def test_resample_trajectory():
+    boxes = linear_trajectory((0, 0, 10, 10), move_to=(100, 0), num_frames=3)
+    up = resample_trajectory(boxes, 5)
+    assert up.shape == (5, 4)
+    assert np.allclose(up[0], boxes[0]) and np.allclose(up[-1], boxes[-1])
+    assert np.allclose(up[2], [50, 0, 60, 10])                   # midpoint interpolates
+    assert np.allclose(resample_trajectory(boxes, 3), boxes)     # no-op at matching length
+    single = resample_trajectory(boxes[:1], 4)
+    assert single.shape == (4, 4) and np.allclose(single, boxes[0])
+
+
+def test_latent_box_size_is_constant_along_the_whole_path():
+    # The trap: 140px wide at x=170 spans 10 latent cells, at x=176 it spans 9.
+    # Mapping each frame independently would produce mismatched shapes mid-path.
+    assert pixel_box_to_latent_box((170, 100, 310, 190), LAT_H, LAT_W) == (10, 6, 20, 12)
+    assert pixel_box_to_latent_box((176, 100, 316, 190), LAT_H, LAT_W) == (11, 6, 20, 12)
+
+    window = _traj_window()
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(200, 90),
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes)
+    sizes = {(s.src[1] - s.src[0], s.src[3] - s.src[2]) for s in plan}
+    assert len(sizes) == 1, f"src patch size drifted along the path: {sizes}"
+    for s in plan:
+        assert (s.dst[1] - s.dst[0], s.dst[3] - s.dst[2]) == (s.src[1] - s.src[0], s.src[3] - s.src[2])
+        assert s.weight.shape == (s.dst[1] - s.dst[0], s.dst[3] - s.dst[2])
+
+
+def test_zero_displacement_trajectory_reduces_to_the_static_case():
+    window = _traj_window()
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(0, 0),
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes)
+    for s in plan:
+        assert s.cell_shift == (0, 0)
+        assert s.src == s.dst, "a zero trajectory must copy in place"
+        assert s.vacated.max() == 0.0, "nothing is vacated when nothing moves"
+
+
+def test_cell_shift_matches_the_requested_displacement():
+    window = _traj_window()
+    # 320px right, 160px down over the window -> 20 and 10 latent cells at the end
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(320, 160),
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes)
+    # The first *target* is latent frame 1, not the anchor -- it has already
+    # moved. Latent frame 1 covers pixels 1..4, mean 2.5 of 40 -> 20px -> 1 cell.
+    assert plan[0].cell_shift == (1, 1)
+    # Last target is latent frame 9, covering pixels 33..36, mean 34.5 of 40
+    # -> 276px right (17.25 cells) and 138px down (8.6 cells).
+    assert plan[-1].cell_shift == (9, 17)
+    shifts = [s.cell_shift for s in plan]
+    assert shifts == sorted(shifts), "displacement must increase monotonically along a linear path"
+    # ~2 cells per latent frame in x: coarse, but enough to read as motion
+    assert all(b[1] - a[1] >= 1 for a, b in zip(shifts, shifts[1:])), "every step should advance"
+
+
+def test_vacated_map_is_zero_where_source_and_destination_overlap():
+    window = _traj_window()
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(320, 0),
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes, feather=0)
+    src_lbox = pixel_box_to_latent_box((170, 100, 310, 190), LAT_H, LAT_W)
+    sx1, sy1, sx2, sy2 = src_lbox
+
+    late = plan[-1]                      # fully disjoint by the end of the path
+    assert late.vacated[sy1:sy2, sx1:sx2].min() == 1.0, "the whole source box is vacated once disjoint"
+    assert late.vacated.sum() == (sy2 - sy1) * (sx2 - sx1)
+
+    mid = next(s for s in plan if 0 < s.cell_shift[1] < (sx2 - sx1))   # partial overlap
+    dx = mid.cell_shift[1]
+    assert mid.vacated[sy1:sy2, sx1:sx1 + dx].min() == 1.0, "the trailing strip is vacated"
+    assert mid.vacated[sy1:sy2, sx1 + dx:sx2].max() == 0.0, "the still-covered part is not"
+
+
+def test_vacated_map_never_overlaps_the_destination_even_when_feathered():
+    # Regression: subtracting the *feathered* destination map left vacated > 0
+    # inside the destination's own ramp, so softening partially erased content
+    # the copy had just written -- a dimmed halo around the moved object.
+    window = _traj_window()
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(96, 0),  # small shift -> heavy overlap
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes, feather=2)
+    for s in plan:
+        dy1, dy2, dx1, dx2 = s.dst
+        assert s.vacated[dy1:dy2, dx1:dx2].max() == 0.0, (
+            f"frame {s.frame}: vacated must be zero everywhere inside the destination box")
+    assert any(s.vacated.max() > 0 for s in plan), "the trailing strip should still be vacated"
+
+
+def test_plan_clips_at_the_frame_edge_and_crops_src_identically():
+    window = _traj_window()
+    boxes = linear_trajectory((1100, 100, 1240, 190), move_to=(400, 0),  # runs off the right edge
+                              num_frames=window.num_pixel_frames)
+    plan = _plan_for(window, boxes)
+    assert plan, "the early part of the path is still on-screen"
+    for s in plan:
+        assert 0 <= s.dst[0] < s.dst[1] <= LAT_H and 0 <= s.dst[2] < s.dst[3] <= LAT_W
+        assert 0 <= s.src[0] < s.src[1] <= LAT_H and 0 <= s.src[2] < s.src[3] <= LAT_W
+        assert (s.src[1] - s.src[0], s.src[3] - s.src[2]) == (s.dst[1] - s.dst[0], s.dst[3] - s.dst[2])
+    assert plan[-1].dst[3] == LAT_W, "the last on-screen frame is clipped to the right edge"
+
+
+def test_plan_skips_frames_where_the_box_has_left_the_frame():
+    window = _traj_window()
+    boxes = linear_trajectory((1100, 100, 1240, 190), move_to=(2000, 0),
+                              num_frames=window.num_pixel_frames)
+    targets = [i for i, regen in enumerate(build_latent_regen_mask(window)) if regen]
+    plan = _plan_for(window, boxes)
+    assert 0 < len(plan) < len(targets), "frames past the edge should be dropped, not clamped"
+
+
+def test_plan_rejects_a_box_path_of_the_wrong_length():
+    window = _traj_window()
+    boxes = linear_trajectory((170, 100, 310, 190), move_to=(0, 0), num_frames=3)
+    try:
+        _plan_for(window, boxes)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError when the path length != window pixel frames")
+
+
+def test_feathered_map_from_latent_box_handles_offgrid_boxes():
+    # Box hanging off the left edge: the ramp is built at full size then cropped,
+    # so the visible part does NOT ramp against the frame border.
+    m = feathered_map_from_latent_box(LAT_H, LAT_W, (-4, 6, 6, 12), feather=2)
+    assert m[6:12, 0:6].max() == 1.0, "the interior that is on-screen still reaches full weight"
+    assert m[:, 6:].max() == 0.0
+    assert feathered_map_from_latent_box(LAT_H, LAT_W, (-20, 6, -10, 12)).max() == 0.0
 
 
 def test_out_of_range_frame_indices_still_rejected():

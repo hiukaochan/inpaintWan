@@ -35,13 +35,19 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from frame_mapping import pixel_box_to_latent_box  # noqa: E402
+from frame_mapping import (  # noqa: E402
+    linear_trajectory,
+    load_trajectory_npy,
+    pixel_box_to_latent_box,
+)
 
 Box = tuple[int, int, int, int]
 
-TYPED_COLOR = (255, 64, 64)      # RGB red   -- the box as given
-EFFECTIVE_COLOR = (64, 255, 96)  # RGB green -- what actually gets pinned
+TYPED_COLOR = (255, 64, 64)      # RGB red    -- the box as given
+EFFECTIVE_COLOR = (64, 255, 96)  # RGB green  -- what actually gets pinned
 GRID_COLOR = (255, 255, 0)
+TRAJ_COLOR = (80, 170, 255)      # RGB blue   -- an object's path
+TRAJ_END_COLOR = (255, 200, 60)  # RGB amber  -- where the path ends
 
 
 def parse_box(spec: str) -> Box:
@@ -188,6 +194,44 @@ def draw_boxes(
     return img
 
 
+def draw_trajectory(
+    frame: np.ndarray,
+    path: np.ndarray,
+    *,
+    intermediate: int = 3,
+    thickness: int = 2,
+) -> np.ndarray:
+    """Draw an object's box path on a copy of `frame`.
+
+    `path` is `(F, 4)` boxes as produced by `frame_mapping.linear_trajectory`
+    or `load_trajectory_npy`. The centre track is drawn as a polyline, with the
+    box outlined at the start (blue), the end (amber), and a few intermediate
+    positions so the sweep is legible.
+
+    This is the check worth doing before a GPU run: a path that clips off-frame
+    or crosses something that should not move is obvious here and expensive
+    to discover afterwards.
+    """
+    if path.ndim != 2 or path.shape[1] != 4:
+        raise ValueError(f"path must be (F, 4), got {path.shape}")
+    img = np.ascontiguousarray(frame.copy())
+
+    centres = np.stack([(path[:, 0] + path[:, 2]) / 2, (path[:, 1] + path[:, 3]) / 2], axis=1)
+    pts = centres.round().astype(np.int32).reshape(-1, 1, 2)
+    cv2.polylines(img, [pts], isClosed=False, color=TRAJ_COLOR, thickness=thickness)
+
+    picks = np.unique(np.linspace(0, len(path) - 1, intermediate + 2).round().astype(int))
+    for k, i in enumerate(picks):
+        x1, y1, x2, y2 = (int(round(v)) for v in path[i])
+        last = k == len(picks) - 1
+        color = TRAJ_END_COLOR if last else TRAJ_COLOR
+        cv2.rectangle(img, (x1, y1), (x2, y2), color, thickness if (k == 0 or last) else 1)
+
+    cx, cy = (int(round(v)) for v in centres[-1])
+    cv2.circle(img, (cx, cy), max(4, thickness * 3), TRAJ_END_COLOR, -1)
+    return img
+
+
 def save_image(path: Path, frame_rgb: np.ndarray) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not cv2.imwrite(str(path), cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)):
@@ -209,8 +253,15 @@ def parse_args():
     ap.add_argument("--video", type=Path, required=True)
     ap.add_argument("--frame", type=int, default=0,
                     help="frame index to draw on; negative counts from the end (-1 is the last frame)")
-    ap.add_argument("--box", type=str, action="append", required=True,
-                    help="'x1,y1,x2,y2' in video pixels. Repeatable")
+    ap.add_argument("--box", type=str, action="append", default=None,
+                    help="'x1,y1,x2,y2' in video pixels: a static box. Repeatable")
+    ap.add_argument("--object_traj", type=str, action="append", default=None,
+                    help="trajectory .npy in SG-I2V's [N, 2+F, 2] format, drawn as a path. Repeatable. "
+                         "Same flag name as static_range_edit.py takes")
+    ap.add_argument("--object_box", type=str, default=None,
+                    help="'x1,y1,x2,y2' start box for a straight-line path preview; needs --move_to")
+    ap.add_argument("--move_to", type=str, default=None,
+                    help="'dx,dy' pixel displacement for --object_box")
     ap.add_argument("--output", type=Path, default=Path("boxes.png"))
     ap.add_argument("--grid", action="store_true",
                     help="overlay the latent-cell lattice, so the outward snap is visible")
@@ -224,18 +275,45 @@ def parse_args():
 
 def main():
     args = parse_args()
-    boxes = [parse_box(b) for b in args.box]
+    if bool(args.object_box) != bool(args.move_to):
+        raise ValueError("--object_box and --move_to must be given together")
+    if not args.box and not args.object_traj and not args.object_box:
+        raise ValueError("pass at least one of --box, --object_traj or --object_box")
+    boxes = [parse_box(b) for b in (args.box or [])]
 
     frame, total, fps = read_frame(args.video, args.frame)
     h, w = frame.shape[:2]
     print(f"{args.video}: frame {args.frame} of {total}, {w}x{h}, {fps:.2f} fps")
+
+    paths = []
+    for traj in (args.object_traj or []):
+        paths.extend(load_trajectory_npy(Path(traj), (w, h), (w, h)))
+    if args.object_box:
+        parts = args.move_to.split(",")
+        if len(parts) != 2:
+            raise ValueError(f"--move_to must be 'dx,dy', got {args.move_to!r}")
+        paths.append(linear_trajectory(parse_box(args.object_box),
+                                       (float(parts[0]), float(parts[1])), 25))
+
     for box in boxes:
         print(describe(box, h, w, args.stride))
+    for i, path in enumerate(paths):
+        start = tuple(int(round(v)) for v in path[0])
+        end = tuple(int(round(v)) for v in path[-1])
+        dx = (end[0] + end[2] - start[0] - start[2]) / 2
+        dy = (end[1] + end[3] - start[1] - start[3]) / 2
+        print(f"  object {i}: {start} -> {end}   moves ({dx:+.0f}, {dy:+.0f}) px "
+              f"= ({dx / args.stride:+.1f}, {dy / args.stride:+.1f}) latent cells")
+        if max(abs(dx), abs(dy)) < args.stride:
+            print(f"    WARNING: the whole path is under one {args.stride}px latent cell -- "
+                  f"this motion cannot be expressed by a latent-space edit")
 
     annotated = draw_boxes(
         frame, boxes,
         show_effective=not args.no_effective, grid=args.grid,
         labels=not args.no_labels, stride=args.stride)
+    for path in paths:
+        annotated = draw_trajectory(annotated, path)
     save_image(args.output, annotated)
 
 

@@ -242,6 +242,32 @@ def anchor_latent_frame(
     return None if first_regen == 0 else first_regen - 1
 
 
+def feathered_map_from_latent_box(
+    latent_h: int,
+    latent_w: int,
+    lbox: tuple[int, int, int, int],
+    feather: int = 2,
+) -> np.ndarray:
+    """A `(latent_h, latent_w)` weight map for one box given in *latent cells*.
+
+    Unlike `build_feathered_box_weight`, `lbox` may extend outside the grid --
+    the raised-cosine patch is built at the box's full size and then cropped,
+    so a box hanging off an edge keeps the ramp geometry it would have had if
+    the frame were larger, instead of ramping against the frame border. That
+    matters for trajectories, where a moving box legitimately runs off-frame.
+    """
+    lx1, ly1, lx2, ly2 = lbox
+    weight = np.zeros((latent_h, latent_w), dtype=np.float32)
+    cx1, cy1 = max(0, lx1), max(0, ly1)
+    cx2, cy2 = min(latent_w, lx2), min(latent_h, ly2)
+    if cx1 >= cx2 or cy1 >= cy2:
+        return weight
+
+    patch = _cosine_ramp(ly2 - ly1, feather)[:, None] * _cosine_ramp(lx2 - lx1, feather)[None, :]
+    weight[cy1:cy2, cx1:cx2] = patch[cy1 - ly1:cy2 - ly1, cx1 - lx1:cx2 - lx1]
+    return weight
+
+
 def build_feathered_box_weight(
     boxes: list[tuple[int, int, int, int]],
     latent_h: int,
@@ -270,14 +296,8 @@ def build_feathered_box_weight(
         raise ValueError(f"feather must be >= 0, got {feather}")
 
     for box in boxes:
-        lx1, ly1, lx2, ly2 = pixel_box_to_latent_box(box, latent_h, latent_w, vae_spatial_stride)
-        bh, bw = ly2 - ly1, lx2 - lx1
-
-        ramp_y = _cosine_ramp(bh, feather)
-        ramp_x = _cosine_ramp(bw, feather)
-        patch = ramp_y[:, None] * ramp_x[None, :]
-
-        weight[ly1:ly2, lx1:lx2] = np.maximum(weight[ly1:ly2, lx1:lx2], patch)
+        lbox = pixel_box_to_latent_box(box, latent_h, latent_w, vae_spatial_stride)
+        weight = np.maximum(weight, feathered_map_from_latent_box(latent_h, latent_w, lbox, feather))
 
     return weight
 
@@ -295,6 +315,182 @@ def _cosine_ramp(length: int, feather: int) -> np.ndarray:
     w[:n] = np.minimum(w[:n], ramp[:n])
     w[length - n:] = np.minimum(w[length - n:], ramp[:n][::-1])
     return w
+
+
+@dataclass(frozen=True)
+class LatentShift:
+    """One latent frame's copy instruction, in latent-cell coordinates.
+
+    `src` and `dst` are `(y1, y2, x1, x2)` half-open slices of identical size,
+    already clipped to the grid. `weight` is the feathered patch matching that
+    clipped size; `vacated` is a full `(H, W)` map marking cells the box moved
+    *out of* -- zero wherever the destination still covers them.
+    """
+
+    frame: int
+    src: tuple[int, int, int, int]
+    dst: tuple[int, int, int, int]
+    weight: np.ndarray
+    vacated: np.ndarray
+    cell_shift: tuple[int, int]  # (dy, dx) in latent cells, for reporting
+
+
+def load_trajectory_npy(
+    path,
+    orig_size: tuple[int, int],
+    target_size: tuple[int, int],
+) -> list[np.ndarray]:
+    """Load SG-I2V's `[N, 2+F, 2]` trajectory format.
+
+    Rows `[:, :2]` are the box's top-left/bottom-right corners as `(w, h)`;
+    rows `[:, 2:]` are the box *centre* in each of F frames, also `(w, h)`.
+    Coordinates are rescaled from `orig_size` to `target_size` exactly as
+    `SG-I2V/inference.py:36-37` does.
+
+    Returns one `(F, 4)` array of `(x1, y1, x2, y2)` boxes per object. As in
+    SG-I2V, the box keeps its frame-0 size throughout and only the centre
+    moves (`SG-I2V/inference.py:46-49`).
+    """
+    ret = np.load(path).astype(np.float32)
+    if ret.ndim != 3 or ret.shape[1] < 3 or ret.shape[2] != 2:
+        raise ValueError(
+            f"trajectory must have shape [N, 2+F, 2] with F >= 1, got {ret.shape}")
+
+    ow, oh = orig_size
+    tw, th = target_size
+    ret[:, :, 0] *= tw / ow
+    ret[:, :, 1] *= th / oh
+
+    out = []
+    for obj in ret:
+        (x1, y1), (x2, y2) = obj[0], obj[1]
+        centres = obj[2:]
+        delta = centres - centres[0]  # (F, 2) as (dw, dh)
+        boxes = np.stack([
+            x1 + delta[:, 0], y1 + delta[:, 1],
+            x2 + delta[:, 0], y2 + delta[:, 1],
+        ], axis=1)
+        out.append(boxes.astype(np.float32))
+    return out
+
+
+def linear_trajectory(box: tuple[int, int, int, int], move_to: tuple[float, float], num_frames: int) -> np.ndarray:
+    """`(num_frames, 4)` boxes sweeping `box` linearly by `move_to = (dx, dy)`.
+
+    Frame 0 is `box` itself and the last frame is `box` displaced by the full
+    `(dx, dy)`, so `move_to` is a *displacement*, not a destination corner.
+    """
+    if num_frames < 1:
+        raise ValueError("num_frames must be >= 1")
+    x1, y1, x2, y2 = box
+    dx, dy = move_to
+    t = np.linspace(0.0, 1.0, num_frames, dtype=np.float32) if num_frames > 1 else np.zeros(1, np.float32)
+    return np.stack([x1 + t * dx, y1 + t * dy, x2 + t * dx, y2 + t * dy], axis=1).astype(np.float32)
+
+
+def resample_trajectory(boxes: np.ndarray, num_frames: int) -> np.ndarray:
+    """Linearly resample an `(F, 4)` box path to `num_frames` entries.
+
+    A trajectory authored against the whole video, or against the edit range,
+    will not generally have one entry per frame of the crop window the model
+    actually sees. Resampling is more forgiving than demanding an exact length,
+    and the caller reports when it happens.
+    """
+    if boxes.ndim != 2 or boxes.shape[1] != 4:
+        raise ValueError(f"boxes must be (F, 4), got {boxes.shape}")
+    if len(boxes) == num_frames:
+        return boxes.astype(np.float32)
+    if len(boxes) == 1:
+        return np.repeat(boxes.astype(np.float32), num_frames, axis=0)
+    src = np.linspace(0.0, 1.0, len(boxes))
+    dst = np.linspace(0.0, 1.0, num_frames)
+    return np.stack([np.interp(dst, src, boxes[:, k]) for k in range(4)], axis=1).astype(np.float32)
+
+
+def trajectory_to_latent_plan(
+    window: FrameRangeWindow,
+    per_frame_boxes: np.ndarray,
+    anchor_latent_idx: int,
+    target_frames: list[int],
+    latent_h: int,
+    latent_w: int,
+    vae_spatial_stride: int = 16,
+    temporal_stride: int = DEFAULT_TEMPORAL_STRIDE,
+    feather: int = 2,
+) -> list[LatentShift]:
+    """Turn a per-pixel-frame box path into per-latent-frame copy instructions.
+
+    `per_frame_boxes` is `(window.num_pixel_frames, 4)` in model-input pixel
+    coordinates, indexed by *window-local* pixel frame.
+
+    Two things this has to get right, both of which are easy to get wrong:
+
+    **The latent box size is computed once, from the anchor.** Rounding a pixel
+    box outward to latent cells does not preserve its size -- a 140px-wide box
+    starting at x=170 spans 10 cells, but starting at x=176 it spans 9. Mapping
+    each frame's box independently would therefore produce mismatched shapes
+    partway along the path. Instead the anchor's box fixes the size, and every
+    other frame places that same-sized box at a rounded cell *offset*.
+
+    **A latent frame covers four pixel frames**, so there is no single "the"
+    box for it. The mean box centre over the covered pixel range is used, which
+    is the least arbitrary choice available; motion faster than the temporal
+    stride is averaged away regardless.
+
+    Motion is therefore quantised to whole `vae_spatial_stride`-pixel cells.
+    `cell_shift` on each returned entry exposes that, so a path too slow to
+    register as anything but zeros is visible before any GPU time is spent.
+    """
+    n_pixel = window.num_pixel_frames
+    if per_frame_boxes.shape != (n_pixel, 4):
+        raise ValueError(
+            f"per_frame_boxes must be ({n_pixel}, 4) to match the window, got {per_frame_boxes.shape}")
+
+    def mean_box(latent_idx: int) -> np.ndarray:
+        lo, hi = latent_frame_to_pixel_range(latent_idx, temporal_stride)
+        lo, hi = min(lo, n_pixel - 1), min(hi, n_pixel - 1)
+        return per_frame_boxes[lo:hi + 1].mean(axis=0)
+
+    anchor_box = mean_box(anchor_latent_idx)
+    src_lbox = pixel_box_to_latent_box(
+        tuple(int(round(v)) for v in anchor_box), latent_h, latent_w, vae_spatial_stride)
+    sx1, sy1, sx2, sy2 = src_lbox
+    bw, bh = sx2 - sx1, sy2 - sy1
+    anchor_centre = np.array([(anchor_box[0] + anchor_box[2]) / 2, (anchor_box[1] + anchor_box[3]) / 2])
+    src_map = feathered_map_from_latent_box(latent_h, latent_w, src_lbox, feather)
+    full_patch = _cosine_ramp(bh, feather)[:, None] * _cosine_ramp(bw, feather)[None, :]
+
+    plan: list[LatentShift] = []
+    for t in target_frames:
+        box = mean_box(t)
+        centre = np.array([(box[0] + box[2]) / 2, (box[1] + box[3]) / 2])
+        dx, dy = (int(v) for v in np.round((centre - anchor_centre) / vae_spatial_stride))
+
+        dst_full = (sx1 + dx, sy1 + dy, sx2 + dx, sy2 + dy)
+        cx1, cy1 = max(0, dst_full[0]), max(0, dst_full[1])
+        cx2, cy2 = min(latent_w, dst_full[2]), min(latent_h, dst_full[3])
+        if cx1 >= cx2 or cy1 >= cy2:
+            continue  # box has left the frame entirely at this point in the path
+
+        ox1, oy1 = cx1 - dst_full[0], cy1 - dst_full[1]
+        ox2, oy2 = cx2 - dst_full[0], cy2 - dst_full[1]
+
+        # The destination is excluded by its HARD footprint, not its feathered
+        # one. Subtracting the feathered map would leave `vacated > 0` inside
+        # the destination's own ramp, so the softening would partially erase
+        # content the copy had just written there -- visible as a dimmed halo
+        # around the object whenever source and destination overlap. The copy
+        # still uses the feathered `full_patch`; only this exclusion is hard.
+        dst_hard = feathered_map_from_latent_box(latent_h, latent_w, dst_full, feather=0)
+        plan.append(LatentShift(
+            frame=t,
+            src=(sy1 + oy1, sy1 + oy2, sx1 + ox1, sx1 + ox2),
+            dst=(cy1, cy2, cx1, cx2),
+            weight=np.ascontiguousarray(full_patch[oy1:oy2, ox1:ox2]),
+            vacated=np.clip(src_map - dst_hard, 0.0, 1.0),
+            cell_shift=(dy, dx),
+        ))
+    return plan
 
 
 def build_spatial_latent_regen_mask(

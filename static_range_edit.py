@@ -47,6 +47,10 @@ from frame_mapping import (  # noqa: E402
     build_latent_regen_mask,
     build_regeneration_window,
     latent_frame_to_pixel_range,
+    linear_trajectory,
+    load_trajectory_npy,
+    resample_trajectory,
+    trajectory_to_latent_plan,
 )
 from frame_range_edit import (  # noqa: E402
     SPATIAL_MULTIPLE,
@@ -69,18 +73,28 @@ from latent_paste import (  # noqa: E402
     target_latent_frames,
     weight_to_tensor,
     write_delta,
+    write_delta_trajectory,
 )
 
 
 class PasteConfig:
-    """Where, how hard, and for how long to pull the boxes back to the anchor."""
+    """What to correct in the latent, how hard, and for how long.
+
+    Carries both modes, which compose: `weight_hw` pins static boxes in place,
+    `plan` moves a box along a trajectory. A run may use either or both -- e.g.
+    hold the cabinet still *and* move the gripper -- since both are latent
+    writes gated by the same sigma window.
+    """
 
     def __init__(
         self,
-        weight_hw: np.ndarray,
         anchor_idx: int,
         target_frames: list[int],
+        weight_hw: np.ndarray | None = None,
+        plan: list | None = None,
         strength: float = 1.0,
+        object_strength: float = 1.0,
+        vacated_fill: float = 1.0,
         sigma_range: tuple[float, float] = (0.30, 1.00),
         max_steps: int = 4,
         fft_ratio: float | None = 0.5,
@@ -88,14 +102,26 @@ class PasteConfig:
         lo, hi = sigma_range
         if lo > hi:
             raise ValueError(f"sigma_range must be (low, high), got {sigma_range}")
+        if weight_hw is None and not plan:
+            raise ValueError("PasteConfig needs static boxes, a trajectory plan, or both")
         self.weight_hw = weight_hw
+        self.plan = plan or []
         self.anchor_idx = anchor_idx
         self.target_frames = target_frames
         self.strength = strength
+        self.object_strength = object_strength
+        self.vacated_fill = vacated_fill
         self.sigma_lo, self.sigma_hi = lo, hi
         self.max_steps = max_steps
         self.fft_ratio = fft_ratio
         self.applied = 0
+
+    def written_frames(self) -> list[int]:
+        """Latent frames either mode touches -- the scope for `fft_restore`."""
+        frames = set(self.plan and [s.frame for s in self.plan] or [])
+        if self.weight_hw is not None:
+            frames |= set(self.target_frames)
+        return sorted(frames)
 
     def should_apply(self, sigma: float) -> bool:
         """Only at high noise, and only for the first `max_steps` such steps.
@@ -172,7 +198,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         sigmas = scheduler.sigmas
 
         weight_t = None
-        if paste is not None:
+        if paste is not None and paste.weight_hw is not None:
             weight_t = weight_to_tensor(paste.weight_hw, latent.device, latent.dtype)
 
         arg_c = {"context": context, "seq_len": seq_len}
@@ -190,16 +216,22 @@ class StaticPasteEditor(WanFrameRangeEditor):
 
                 if paste is not None and paste.should_apply(sigma):
                     before = latent
-                    latent = write_delta(
-                        latent, z, weight_t, paste.anchor_idx, paste.target_frames,
-                        sigma, strength=paste.strength)
-                    if paste.fft_ratio is not None and paste.target_frames:
+                    if weight_t is not None:
+                        latent = write_delta(
+                            latent, z, weight_t, paste.anchor_idx, paste.target_frames,
+                            sigma, strength=paste.strength)
+                    if paste.plan:
+                        latent = write_delta_trajectory(
+                            latent, z, paste.anchor_idx, paste.plan, sigma,
+                            strength=paste.object_strength, vacated_fill=paste.vacated_fill)
+                    written = paste.written_frames()
+                    if paste.fft_ratio is not None and written:
                         # Restrict the frequency mix to the frames actually
                         # written: it is a global spatial operation, so running
                         # it over untouched frames would be pure round-trip
                         # error. Within a written frame the smearing is wanted
                         # -- it is what softens the box seam.
-                        idx = torch.tensor(paste.target_frames, device=latent.device, dtype=torch.long)
+                        idx = torch.tensor(written, device=latent.device, dtype=torch.long)
                         latent[:, idx] = fft_restore(latent[:, idx], before[:, idx], d_s=paste.fft_ratio)
                     latent = (1.0 - mask2) * z + mask2 * latent
                     paste.applied += 1
@@ -358,11 +390,7 @@ def _make_paste(paste_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor
     if paste_spec is None:
         return None
     latent_h, latent_w = z.shape[-2], z.shape[-1]
-    weight = build_feathered_box_weight(
-        paste_spec["boxes"], latent_h, latent_w,
-        vae_spatial_stride=paste_spec["vae_spatial_stride"], feather=paste_spec["feather"])
-    if weight.max() <= 0:
-        raise ValueError("--static_box produced an all-zero weight map -- boxes are off-grid")
+    stride, feather = paste_spec["vae_spatial_stride"], paste_spec["feather"]
 
     temporal = [bool(regen_mask[i].any()) for i in range(regen_mask.shape[0])]
     anchor_idx = paste_spec["anchor_idx"]
@@ -371,11 +399,41 @@ def _make_paste(paste_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor
         raise ValueError(
             f"no latent frames left to correct: the regenerate region is "
             f"{[i for i, r in enumerate(temporal) if r]} and the anchor is {anchor_idx}")
-    print(f"[paste] anchor=latent frame {anchor_idx}, targets={targets[0]}..{targets[-1]} "
-          f"({len(targets)} frames), weighted cells={int((weight > 0).sum())}/{latent_h * latent_w}")
+
+    weight = None
+    if paste_spec["boxes"]:
+        weight = build_feathered_box_weight(
+            paste_spec["boxes"], latent_h, latent_w, vae_spatial_stride=stride, feather=feather)
+        if weight.max() <= 0:
+            raise ValueError("--static_box produced an all-zero weight map -- boxes are off-grid")
+        print(f"[static] anchor=latent frame {anchor_idx}, targets={targets[0]}..{targets[-1]} "
+              f"({len(targets)} frames), weighted cells={int((weight > 0).sum())}/{latent_h * latent_w}")
+
+    plan = []
+    for obj_idx, boxes in enumerate(paste_spec["object_paths"]):
+        obj_plan = trajectory_to_latent_plan(
+            paste_spec["window"], boxes, anchor_idx, targets,
+            latent_h, latent_w, vae_spatial_stride=stride, feather=feather)
+        if not obj_plan:
+            raise ValueError(
+                f"object {obj_idx}'s trajectory never lands inside the frame -- check the box "
+                f"coordinates and --move_to against tools/draw_box.py")
+        shifts = [s.cell_shift for s in obj_plan]
+        dropped = len(targets) - len(obj_plan)
+        print(f"[object {obj_idx}] latent-cell shift {shifts[0]} -> {shifts[-1]} over "
+              f"{len(obj_plan)} frames"
+              + (f" ({dropped} dropped: box left the frame)" if dropped else ""))
+        span = max(abs(shifts[-1][0] - shifts[0][0]), abs(shifts[-1][1] - shifts[0][1]))
+        if span <= 1:
+            print(f"  WARNING: the whole path spans {span} latent cell(s). Motion is quantised to "
+                  f"{stride}px, so this trajectory will barely register -- use a larger --move_to "
+                  f"or accept that this edit cannot express it.")
+        plan.extend(obj_plan)
+
     return PasteConfig(
-        weight, anchor_idx, targets,
-        strength=paste_spec["strength"], sigma_range=paste_spec["sigma_range"],
+        anchor_idx, targets, weight_hw=weight, plan=plan,
+        strength=paste_spec["strength"], object_strength=paste_spec["object_strength"],
+        vacated_fill=paste_spec["vacated_fill"], sigma_range=paste_spec["sigma_range"],
         max_steps=paste_spec["max_steps"], fft_ratio=paste_spec["fft_ratio"])
 
 
@@ -385,6 +443,52 @@ def scale_boxes(boxes: list[tuple[int, int, int, int]], sx: float, sy: float):
     handling (`SG-I2V/inference.py:36-37`)."""
     return [(round(x1 * sx), round(y1 * sy), round(x2 * sx), round(y2 * sy))
             for (x1, y1, x2, y2) in boxes]
+
+
+def build_object_paths(
+    args,
+    window: FrameRangeWindow,
+    orig_size: tuple[int, int],
+    model_size: tuple[int, int],
+) -> list[np.ndarray]:
+    """One `(window.num_pixel_frames, 4)` box path per object, in model pixels.
+
+    Both input forms land here: `--object_traj` reads SG-I2V's `[N, 2+F, 2]`
+    files (so their `examples/` transfer unchanged), and
+    `--object_box` + `--move_to` synthesises a straight-line sweep without
+    needing a file. Either way the result is one box per *pixel* frame of the
+    crop window, which is what `trajectory_to_latent_plan` consumes.
+
+    A `.npy` authored against the whole video, or against just the edit range,
+    will not have one entry per window frame; rather than demand an exact
+    length, the path is linearly resampled and the resample is reported.
+    """
+    n_pixel = window.num_pixel_frames
+    ow, oh = orig_size
+    mw, mh = model_size
+    paths: list[np.ndarray] = []
+
+    for traj_path in (args.object_traj or []):
+        for obj in load_trajectory_npy(Path(traj_path), (ow, oh), (mw, mh)):
+            if len(obj) != n_pixel:
+                print(f"[object] resampling {traj_path} from {len(obj)} to {n_pixel} frames "
+                      f"to match the crop window")
+                obj = resample_trajectory(obj, n_pixel)
+            paths.append(obj)
+
+    if args.object_box:
+        box = parse_box(args.object_box)
+        parts = args.move_to.split(",")
+        if len(parts) != 2:
+            raise ValueError(f"--move_to must be 'dx,dy', got {args.move_to!r}")
+        try:
+            dx, dy = (float(v) for v in parts)
+        except ValueError:
+            raise ValueError(f"--move_to components must be numbers, got {args.move_to!r}") from None
+        scaled = scale_boxes([box], mw / ow, mh / oh)[0]
+        paths.append(linear_trajectory(scaled, (dx * mw / ow, dy * mh / oh), n_pixel))
+
+    return paths
 
 
 def visualize_boxes(frame: np.ndarray, boxes, save_path: Path, stride: int = 16) -> None:
@@ -437,6 +541,23 @@ def parse_args():
                          "structure (cabinet top, side panel, wall behind) over one big box -- a box "
                          "straddling something that legitimately moves, like the drawer front, will "
                          "fight that motion")
+    ap.add_argument("--object_traj", type=str, action="append", default=None,
+                    help="path to a trajectory .npy in SG-I2V's [N, 2+F, 2] format (two corner rows "
+                         "as (w,h), then F box centres as (w,h)), in source-video pixels. Repeatable. "
+                         "The box keeps its size and only the centre moves, as in SG-I2V")
+    ap.add_argument("--object_box", type=str, default=None,
+                    help="'x1,y1,x2,y2' in source-video pixels: the object to move, as an alternative "
+                         "to --object_traj for a simple straight-line sweep. Requires --move_to")
+    ap.add_argument("--move_to", type=str, default=None,
+                    help="'dx,dy' total pixel DISPLACEMENT (not a destination corner) applied linearly "
+                         "across the window. Requires --object_box")
+    ap.add_argument("--object_strength", type=float, default=1.0,
+                    help="[0,1] how strongly to move the object toward its trajectory position")
+    ap.add_argument("--vacated_fill", type=float, default=1.0,
+                    help="[0,1] how hard to erase the content the object left behind. 1.0 removes the "
+                         "content term entirely (keeping that region's own noise) and lets the model "
+                         "refill it; 0.0 writes nothing there, which is the control condition for "
+                         "seeing how bad the ghost actually is")
     ap.add_argument("--paste_strength", type=float, default=1.0,
                     help="[0,1] fraction of the anchor-vs-current difference to correct per step")
     ap.add_argument("--paste_steps", type=int, default=4,
@@ -468,14 +589,16 @@ def main():
     args = parse_args()
     if not args.prompt and not args.prompt_file:
         raise ValueError("must pass --prompt or --prompt_file")
-    if not args.static_box:
+    if bool(args.object_box) != bool(args.move_to):
+        raise ValueError("--object_box and --move_to must be given together")
+    if not args.static_box and not args.object_traj and not args.object_box:
         raise ValueError(
-            "must pass at least one --static_box -- without it this script is exactly "
-            "frame_range_edit.py, so use that instead")
+            "must pass at least one of --static_box, --object_traj or --object_box -- without any of "
+            "them this script is exactly frame_range_edit.py, so use that instead")
     prompts = [args.prompt] if args.prompt else [
         line.strip() for line in args.prompt_file.read_text().splitlines() if line.strip()
     ]
-    boxes = [parse_box(b) for b in args.static_box]
+    boxes = [parse_box(b) for b in (args.static_box or [])]
 
     full_frames, fps = read_video_frames(args.input_video)
     cfg = WAN_CONFIGS[args.task]
@@ -519,16 +642,27 @@ def main():
         print(f"[paste] WARNING: anchor latent frame {anchor_idx} is inside the regenerate region, "
               f"so it is not frozen and may itself drift during the edit")
 
+    object_paths = build_object_paths(args, window, (orig_w, orig_h), (valid_w, valid_h))
+
     if args.visualize_boxes is not None:
         anchor_pixel = window.window_start + latent_frame_to_pixel_range(anchor_idx)[0]
-        visualize_boxes(full_frames[anchor_pixel], boxes, args.visualize_boxes)
+        preview = list(boxes)
+        for path in object_paths:  # show each object where it starts and ends
+            src_scale = (orig_w / valid_w, orig_h / valid_h)
+            for frame_box in (path[0], path[-1]):
+                preview.append(tuple(int(round(v * src_scale[k % 2])) for k, v in enumerate(frame_box)))
+        visualize_boxes(full_frames[anchor_pixel], preview, args.visualize_boxes)
         print(f"anchor latent frame {anchor_idx} -> source pixel frame {anchor_pixel}")
         return
 
     paste_spec = {
         "boxes": model_boxes,
+        "object_paths": object_paths,
+        "window": window,
         "anchor_idx": anchor_idx,
         "strength": args.paste_strength,
+        "object_strength": args.object_strength,
+        "vacated_fill": args.vacated_fill,
         "sigma_range": tuple(args.paste_sigma_range),
         "max_steps": args.paste_steps,
         "fft_ratio": None if args.no_fft_restore else args.fft_ratio,
