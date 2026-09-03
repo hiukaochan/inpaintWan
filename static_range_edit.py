@@ -45,11 +45,13 @@ from frame_mapping import (  # noqa: E402
     anchor_latent_frame,
     build_feathered_box_weight,
     build_latent_regen_mask,
+    build_freeze_regen_mask,
     build_regeneration_window,
     latent_frame_to_pixel_range,
     linear_trajectory,
     load_trajectory_npy,
     resample_trajectory,
+    snap_box_outward,
     trajectory_to_latent_plan,
 )
 from frame_range_edit import (  # noqa: E402
@@ -70,6 +72,7 @@ from frame_range_edit import (  # noqa: E402
 )
 from latent_paste import (  # noqa: E402
     fft_restore,
+    pin_anchor_content,
     target_latent_frames,
     weight_to_tensor,
     write_delta,
@@ -185,6 +188,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         guide_scale: float,
         seed_g: torch.Generator,
         paste: PasteConfig | None,
+        z_frozen: torch.Tensor | None = None,
     ) -> torch.Tensor:
         """The `frame_range_edit.py` denoising loop with one insertion.
 
@@ -196,6 +200,10 @@ class StaticPasteEditor(WanFrameRangeEditor):
         pipe = self.pipe
         timesteps = scheduler.timesteps[first_step:]
         sigmas = scheduler.sigmas
+        # What mask-0 positions are held at. Defaults to `z` (the source
+        # encoding), and is the anchor-pinned copy when --freeze_box is used;
+        # `z` itself stays the source, which `write_delta` needs for its delta.
+        z_hold = z if z_frozen is None else z_frozen
 
         weight_t = None
         if paste is not None and paste.weight_hw is not None:
@@ -233,7 +241,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
                         # -- it is what softens the box seam.
                         idx = torch.tensor(written, device=latent.device, dtype=torch.long)
                         latent[:, idx] = fft_restore(latent[:, idx], before[:, idx], d_s=paste.fft_ratio)
-                    latent = (1.0 - mask2) * z + mask2 * latent
+                    latent = (1.0 - mask2) * z_hold + mask2 * latent
                     paste.applied += 1
                     print(f"[paste] step {abs_idx} sigma={sigma:.4f} "
                           f"({paste.applied}/{paste.max_steps})")
@@ -256,7 +264,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
                 temp_x0 = scheduler.step(
                     noise_pred.unsqueeze(0), t, latent.unsqueeze(0), return_dict=False, generator=seed_g)[0]
                 latent = temp_x0.squeeze(0)
-                latent = (1.0 - mask2) * z + mask2 * latent
+                latent = (1.0 - mask2) * z_hold + mask2 * latent
 
         if paste is not None and paste.applied == 0:
             print(f"[paste] WARNING: no step fell in sigma range "
@@ -276,6 +284,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         prompt: str,
         *,
         paste_spec: dict | None = None,
+        freeze_spec: dict | None = None,
         n_prompt: str = "",
         sampling_steps: int = 20,
         shift: float = 5.0,
@@ -300,12 +309,14 @@ class StaticPasteEditor(WanFrameRangeEditor):
         start_idx = min(round(len(scheduler.timesteps) * (1.0 - noise_strength)),
                         len(scheduler.timesteps) - 1)
         sigma0 = scheduler.sigmas[start_idx].to(device=self.device, dtype=z.dtype)
-        latent = (1.0 - mask2) * z + mask2 * ((1.0 - sigma0) * z + sigma0 * noise)
+        z_frozen = _make_frozen(freeze_spec, regen_mask, z)
+        z_hold = z if z_frozen is None else z_frozen
+        latent = (1.0 - mask2) * z_hold + mask2 * ((1.0 - sigma0) * z + sigma0 * noise)
 
         paste = _make_paste(paste_spec, regen_mask, z)
         latent = self._denoise(
             latent, z, mask2, scheduler, start_idx, context, context_null,
-            seq_len, guide_scale, seed_g, paste)
+            seq_len, guide_scale, seed_g, paste, z_frozen=z_frozen)
         return vae_output_to_frames(pipe.vae.decode([latent])[0])
 
     def edit_from_cache(
@@ -315,6 +326,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         prompt: str,
         *,
         paste_spec: dict | None = None,
+        freeze_spec: dict | None = None,
         n_prompt: str = "",
         guide_scale: float = 5.0,
         seed: int = -1,
@@ -353,12 +365,14 @@ class StaticPasteEditor(WanFrameRangeEditor):
               f"{num_steps - (step_idx + 1)} steps remaining")
 
         latent = trajectory_tape[step_idx]["latent"].to(device=self.device, dtype=torch.float32)
-        latent = (1.0 - mask2) * z + mask2 * latent
+        z_frozen = _make_frozen(freeze_spec, regen_mask, z)
+        z_hold = z if z_frozen is None else z_frozen
+        latent = (1.0 - mask2) * z_hold + mask2 * latent
 
         paste = _make_paste(paste_spec, regen_mask, z)
         latent = self._denoise(
             latent, z, mask2, scheduler, step_idx + 1, context, context_null,
-            seq_len, guide_scale, seed_g, paste)
+            seq_len, guide_scale, seed_g, paste, z_frozen=z_frozen)
         return vae_output_to_frames(pipe.vae.decode([latent])[0])
 
     def _mask_and_seq_len(self, regen_mask: np.ndarray, z: torch.Tensor):
@@ -378,6 +392,25 @@ class StaticPasteEditor(WanFrameRangeEditor):
         g = torch.Generator(device=self.device)
         g.manual_seed(seed)
         return g
+
+
+def _make_frozen(freeze_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor):
+    """Bind a `--freeze_box` spec to the latent in hand, like `_make_paste`.
+
+    Returns None when nothing is frozen, so callers keep using `z` unchanged.
+    """
+    if freeze_spec is None or not freeze_spec["latent_boxes"]:
+        return None
+    temporal = [bool(regen_mask[i].any()) for i in range(regen_mask.shape[0])]
+    anchor_idx = freeze_spec["anchor_idx"]
+    targets = target_latent_frames(temporal, anchor_idx)
+    if not targets:
+        raise ValueError("no latent frames left to freeze -- the regenerate region is empty")
+    held = int((regen_mask[targets] == 0).sum())
+    print(f"[freeze] anchor=latent frame {anchor_idx}, targets={targets[0]}..{targets[-1]} "
+          f"({len(targets)} frames), held cells={held // len(targets)}/"
+          f"{regen_mask.shape[1] * regen_mask.shape[2]} per frame")
+    return pin_anchor_content(z, freeze_spec["latent_boxes"], anchor_idx, targets)
 
 
 def _make_paste(paste_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor) -> PasteConfig | None:
@@ -541,6 +574,15 @@ def parse_args():
                          "structure (cabinet top, side panel, wall behind) over one big box -- a box "
                          "straddling something that legitimately moves, like the drawer front, will "
                          "fight that motion")
+    ap.add_argument("--freeze_box", type=str, action="append", default=None,
+                    help="'x1,y1,x2,y2' in source-video pixels: a region to hold HARD at the anchor "
+                         "frame's appearance while everything else regenerates. Repeatable. Unlike "
+                         "--static_box this is not a soft correction that decays with sigma -- the "
+                         "region is excluded from the regenerate mask entirely, held at the anchor's "
+                         "latent content at every step, and fed to the DiT with a timestep of 0 as "
+                         "clean context. Nothing inside it can move, an occluding arm included, so it "
+                         "pairs badly with a box containing something that should move. Snaps outward "
+                         "to 32px (the DiT's 2x2-cell token grid), not 16px")
     ap.add_argument("--object_traj", type=str, action="append", default=None,
                     help="path to a trajectory .npy in SG-I2V's [N, 2+F, 2] format (two corner rows "
                          "as (w,h), then F box centres as (w,h)), in source-video pixels. Repeatable. "
@@ -591,14 +633,16 @@ def main():
         raise ValueError("must pass --prompt or --prompt_file")
     if bool(args.object_box) != bool(args.move_to):
         raise ValueError("--object_box and --move_to must be given together")
-    if not args.static_box and not args.object_traj and not args.object_box:
+    if (not args.static_box and not args.object_traj and not args.object_box
+            and not args.freeze_box):
         raise ValueError(
-            "must pass at least one of --static_box, --object_traj or --object_box -- without any of "
-            "them this script is exactly frame_range_edit.py, so use that instead")
+            "must pass at least one of --static_box, --freeze_box, --object_traj or --object_box -- "
+            "without any of them this script is exactly frame_range_edit.py, so use that instead")
     prompts = [args.prompt] if args.prompt else [
         line.strip() for line in args.prompt_file.read_text().splitlines() if line.strip()
     ]
     boxes = [parse_box(b) for b in (args.static_box or [])]
+    freeze_boxes = [parse_box(b) for b in (args.freeze_box or [])]
 
     full_frames, fps = read_video_frames(args.input_video)
     cfg = WAN_CONFIGS[args.task]
@@ -624,11 +668,24 @@ def main():
         model_input_frames = resize_frames(raw_window_frames, valid_w, valid_h)
 
     model_boxes = scale_boxes(boxes, valid_w / orig_w, valid_h / orig_h)
+    patch = cfg.patch_size[1]
+    model_freeze_boxes = [
+        snap_box_outward(b, stride * patch, valid_w, valid_h)
+        for b in scale_boxes(freeze_boxes, valid_w / orig_w, valid_h / orig_h)]
 
     temporal_mask = build_latent_regen_mask(window)
     h_latent, w_latent = valid_h // stride, valid_w // cfg.vae_stride[2]
-    regen_mask = np.broadcast_to(
-        np.array(temporal_mask, dtype=bool)[:, None, None], (len(temporal_mask), h_latent, w_latent))
+    if model_freeze_boxes:
+        for given, snapped in zip(freeze_boxes, model_freeze_boxes):
+            print(f"[freeze] {given}  ->  held region {snapped} (snapped out to {stride * patch}px)")
+        regen_mask = build_freeze_regen_mask(
+            window, model_freeze_boxes, valid_h, valid_w,
+            vae_spatial_stride=stride, patch_spatial=patch)
+        if not regen_mask.any():
+            raise ValueError("--freeze_box covers the whole frame -- nothing left to regenerate")
+    else:
+        regen_mask = np.broadcast_to(
+            np.array(temporal_mask, dtype=bool)[:, None, None], (len(temporal_mask), h_latent, w_latent))
 
     anchor_idx = args.anchor_latent_frame
     if anchor_idx is None:
@@ -646,7 +703,10 @@ def main():
 
     if args.visualize_boxes is not None:
         anchor_pixel = window.window_start + latent_frame_to_pixel_range(anchor_idx)[0]
-        preview = list(boxes)
+        preview = list(boxes) + [
+            tuple(int(round(v * (orig_w / valid_w if k % 2 == 0 else orig_h / valid_h)))
+                  for k, v in enumerate(b))
+            for b in model_freeze_boxes]
         for path in object_paths:  # show each object where it starts and ends
             src_scale = (orig_w / valid_w, orig_h / valid_h)
             for frame_box in (path[0], path[-1]):
@@ -655,7 +715,15 @@ def main():
         print(f"anchor latent frame {anchor_idx} -> source pixel frame {anchor_pixel}")
         return
 
-    paste_spec = {
+    freeze_spec = None
+    if model_freeze_boxes:
+        freeze_spec = {
+            "latent_boxes": [(x1 // stride, y1 // stride, x2 // stride, y2 // stride)
+                             for (x1, y1, x2, y2) in model_freeze_boxes],
+            "anchor_idx": anchor_idx,
+        }
+
+    paste_spec = None if not (model_boxes or object_paths) else {
         "boxes": model_boxes,
         "object_paths": object_paths,
         "window": window,
@@ -678,11 +746,13 @@ def main():
         if use_cache:
             edited = editor.edit_from_cache(
                 args.cache_path, regen_mask, prompt, paste_spec=paste_spec,
+                freeze_spec=freeze_spec,
                 n_prompt=args.negative_prompt, guide_scale=args.guide_scale,
                 seed=args.seed, resume_noise_pct=args.noise_strength)
         else:
             edited = editor.edit(
                 model_input_frames, regen_mask, prompt, paste_spec=paste_spec,
+                freeze_spec=freeze_spec,
                 n_prompt=args.negative_prompt, sampling_steps=args.num_steps,
                 shift=args.shift, guide_scale=args.guide_scale,
                 sample_solver=args.sample_solver, seed=args.seed,

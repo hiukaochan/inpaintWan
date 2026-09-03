@@ -291,6 +291,57 @@ paths), plus:
   high-frequency restore (their Eq. 2), which repairs the artifacts that
   editing a latent otherwise introduces.
 
+### Hard-freezing a region instead (`--freeze_box`)
+
+`--static_box` is a *soft* correction and it decays with the noise level: the
+write in `latent_paste.write_delta` is scaled by `(1 - sigma)`, which is
+forced by Wan's flow-matching convention `x = (1-sigma)*x0 + sigma*eps` --
+at high sigma there is barely any `x0` term to edit. At
+`--noise_strength 1.0` the first correction step sits at `sigma = 1.0` and
+writes *nothing*; the four default steps together apply about 6% of the
+anchor delta. That is a real limit of the mechanism, not a setting.
+
+When you want the region genuinely held and everything else free, use
+`--freeze_box` instead:
+
+```bash
+python static_range_edit.py \
+    --input_video initial.mp4 \
+    --start_frame 24 --end_frame 120 \
+    --prompt "the robot arm closes the drawer" \
+    --freeze_box 330,230,630,440 \
+    --output frozen.mp4 \
+    --noise_strength 1.0 \
+    --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
+```
+
+This is the complement of `frame_range_edit.py --edit_mode spatial
+--mask_box`, which regenerates the *inside* of its box. Here the inside is
+excluded from the regenerate mask entirely, so it is held by the two
+structural lines the sampler already runs every step -- `latent =
+(1-mask2)*z_hold + mask2*latent`, plus a per-token timestep of 0 so the DiT
+reads those tokens as clean context. Neither depends on sigma, so the freeze
+is exact at `--noise_strength 1.0`.
+
+The held content is the *anchor frame's*, not each frame's own
+(`latent_paste.pin_anchor_content`). This matters: the source video is the
+drifted one, so holding the box at `z` would reproduce the drift faithfully.
+
+Three consequences worth accepting before using it:
+
+- **Nothing inside the box can move.** Not the drawer front, not an arm that
+  passes in front of it. A frozen region occluded by the gripper will clip it.
+  `--static_box` deliberately leaves later steps free to re-assert an
+  occluder; a freeze does not.
+- **The box snaps outward to 32px, not 16px.** `build_spatial_latent_regen_mask`
+  pools at `vae_stride * patch_size` because the DiT groups 2x2 latent cells
+  into one token. The run prints the snapped region.
+- **It composes with `--static_box`.** Freeze the rigid shell, soft-pin the
+  parts that still need to move a little.
+
+Use `--static_box` when the region should mostly hold but still respond to
+the scene; `--freeze_box` when it should not change at all.
+
 ### Moving an object along a trajectory
 
 The same script also does the non-zero-trajectory case: give a box a path and

@@ -40,6 +40,32 @@ def target_latent_frames(regen_mask: list[bool], anchor_idx: int | None) -> list
     return [i for i, regen in enumerate(regen_mask) if regen and i != anchor_idx]
 
 
+def pin_anchor_content(
+    z: torch.Tensor,
+    latent_boxes: list[tuple[int, int, int, int]],
+    anchor_idx: int,
+    target_frames: list[int],
+) -> torch.Tensor:
+    """Copy the anchor frame's boxed content into every regenerated frame of `z`.
+
+    `z` is the clean encoding of the source video, and the source video is the
+    *drifted* one -- so freezing a box to `z` alone would reproduce the drift
+    exactly. The frozen positions have to hold the anchor's content instead,
+    which is what makes the box static rather than merely un-regenerated.
+
+    Returned as a separate tensor: `z` itself stays the honest encoding of the
+    source, which `write_delta` still needs for its anchor-vs-current delta.
+    """
+    if not latent_boxes or not target_frames:
+        return z
+    pinned = z.clone()
+    idx = torch.tensor(target_frames, device=z.device, dtype=torch.long)
+    for lx1, ly1, lx2, ly2 in latent_boxes:
+        anchor_patch = z[:, anchor_idx, ly1:ly2, lx1:lx2].unsqueeze(1)
+        pinned[:, idx, ly1:ly2, lx1:lx2] = anchor_patch.expand(-1, len(target_frames), -1, -1)
+    return pinned
+
+
 def write_delta(
     latent: torch.Tensor,
     z: torch.Tensor,
