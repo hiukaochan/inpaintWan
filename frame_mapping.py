@@ -493,6 +493,24 @@ def trajectory_to_latent_plan(
     return plan
 
 
+def snap_box_outward(box, multiple: int, frame_w: int, frame_h: int):
+    """Round a pixel box out to whole `multiple`-pixel blocks, clipped to the frame.
+
+    `--freeze_box` needs this at 32px, not the 16px `pixel_box_to_latent_box`
+    uses: the DiT groups 2x2 latent cells into one token and the per-token
+    timestep trick reads the mask with a stride-2 subsample, so a mask that
+    varies inside a 32px block would be sampled at an arbitrary corner. See
+    `build_spatial_latent_regen_mask`. Rounding *outward* keeps the same
+    convention as every other box in the project -- the region actually held
+    is never smaller than the one asked for.
+    """
+    x1, y1, x2, y2 = box
+    return (max(0, (x1 // multiple) * multiple),
+            max(0, (y1 // multiple) * multiple),
+            min(frame_w, -(-x2 // multiple) * multiple),
+            min(frame_h, -(-y2 // multiple) * multiple))
+
+
 def build_spatial_latent_regen_mask(
     window: FrameRangeWindow,
     pixel_mask: np.ndarray,
@@ -541,3 +559,31 @@ def build_spatial_latent_regen_mask(
         mask[i] = pooled[lo:hi + 1].any(axis=0)
 
     return mask.repeat(patch_spatial, axis=1).repeat(patch_spatial, axis=2)
+
+
+def build_freeze_regen_mask(
+    window: FrameRangeWindow,
+    freeze_boxes: list[tuple[int, int, int, int]],
+    frame_h: int,
+    frame_w: int,
+    *,
+    vae_spatial_stride: int = 16,
+    patch_spatial: int = 2,
+) -> np.ndarray:
+    """Regenerate everything in the range *except* the frozen boxes.
+
+    The complement of `frame_range_edit.py --edit_mode spatial --mask_box`,
+    which regenerates the inside of its box and leaves the outside biased
+    toward the original. Here the inside is held and the outside is free.
+
+    This is a different mechanism from `--static_box`, not a stronger setting
+    of it. A mask-0 position is pinned by the two structural lines the sampler
+    already runs -- `latent = (1-mask2)*z + mask2*latent` every step, and a
+    per-token timestep of 0 so the DiT reads those tokens as clean context --
+    so it does not decay with sigma the way `latent_paste.write_delta` does.
+    """
+    pixel_mask = np.ones((window.num_pixel_frames, frame_h, frame_w), dtype=bool)
+    for x1, y1, x2, y2 in freeze_boxes:
+        pixel_mask[:, y1:y2, x1:x2] = False
+    return build_spatial_latent_regen_mask(
+        window, pixel_mask, vae_spatial_stride=vae_spatial_stride, patch_spatial=patch_spatial)

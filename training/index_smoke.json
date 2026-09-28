@@ -1,0 +1,3681 @@
+{
+ "droid_root": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid",
+ "success_only": true,
+ "entries": [
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:42:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:42:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:42:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:42:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:43:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:43:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:43:39_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:43:39_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:53:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:53:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:53:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:53:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:55:14_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:55:14_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_09:55:14_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_09:55:14_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:11:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:11:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:11:29_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:11:29_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:12:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:12:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:12:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:12:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:45:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:45:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:57:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:57:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_10:57:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_10:57:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:14:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:14:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:18:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:18:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:25:09_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:25:09_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:27:58_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:27:58_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:27:58_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:27:58_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:33:08_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:33:08_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:33:08_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:33:08_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_11:35:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_11:35:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:37:09_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:37:09_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:53:01_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:53:01_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:53:01_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:53:01_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:54:53_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:54:53_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:54:53_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:54:53_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:55:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:55:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_14:55:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_14:55:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_15:01:09_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_15:01:09_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_15:01:09_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_15:01:09_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_15:03:33_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_15:03:33_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:05:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:05:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:05:29_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:05:29_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:08:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:08:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:08:13_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:08:13_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:11:11_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:11:11_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:11:11_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:11:11_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:17_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:17_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:17_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:17_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:45_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:14:45_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:18:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:18:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:18:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:18:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:21:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:21:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:21:05_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:21:05_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:20_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:20_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:20_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:20_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:22:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:26:12_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:26:12_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_16:26:12_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_16:26:12_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:38:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:38:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:38:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:38:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:41:04_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:41:04_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:41:04_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:41:04_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:46:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:46:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:46:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:46:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:14_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:14_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:14_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:14_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:47_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:47_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:47_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:47:47_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:48:48_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:48:48_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:51:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:51:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:55:00_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:55:00_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-07__Fri_Jul__7_18:55:44_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-07__Fri_Jul__7_18:55:44_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_08:59:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_08:59:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_08:59:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_08:59:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:06:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:06:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:06:45_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:06:45_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:09:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:09:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:09:13_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:09:13_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:10:55_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:10:55_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:10:55_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:10:55_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:23:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:23:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:23:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:23:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:31:28_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:31:28_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:31:28_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:31:28_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:33:37_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:33:37_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:33:37_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:33:37_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:35:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:35:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:35:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:35:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:44:18_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:44:18_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:44:18_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:44:18_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:46:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:46:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:46:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:46:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:56:55_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:56:55_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_09:56:55_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_09:56:55_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:08:47_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:08:47_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:08:47_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:08:47_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:13:30_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:13:30_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:13:30_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:13:30_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:16:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:16:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:16:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:16:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:17:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:17:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:17:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:17:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:19:52_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:19:52_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:19:52_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:19:52_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:26:07_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:26:07_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:26:07_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:26:07_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:33:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:33:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:33:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:33:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:35:02_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:35:02_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:35:02_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:35:02_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:45:44_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:45:44_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:45:44_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:45:44_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:47:17_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:47:17_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:47:17_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:47:17_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:53:41_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:53:41_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:53:41_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:53:41_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:55:30_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:55:30_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_10:55:30_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_10:55:30_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:03:22_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:03:22_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:03:22_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:03:22_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:05:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:05:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:05:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:05:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:42:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:42:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:42:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:42:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:46:51_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:46:51_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:46:51_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:46:51_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:50:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:50:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:50:05_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:50:05_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:55:43_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:55:43_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_11:55:43_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_11:55:43_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:00:43_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:00:43_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:00:43_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:00:43_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:01:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:01:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:01:39_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:01:39_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:03:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:03:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-08__Sat_Jul__8_12:03:13_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-08__Sat_Jul__8_12:03:13_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:14:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:14:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:19:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:19:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:19:05_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:19:05_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:20:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:20:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:25:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:25:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:25:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:25:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:27:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:27:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:27:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:27:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:44:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:44:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:44:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:44:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:46:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:46:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_11:46:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_11:46:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_12:03:07_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_12:03:07_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-12__Wed_Jul_12_12:03:07_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-12__Wed_Jul_12_12:03:07_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:38:55_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:38:55_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:38:55_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:38:55_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:49:52_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:49:52_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:49:52_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:49:52_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:50:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:50:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:50:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:50:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_10:52:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:07:37_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:07:37_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:07:37_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:07:37_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:59_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:59_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:59_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:09:59_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:48_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:48_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:48_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:11:48_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:11_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:11_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:11_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:11_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:12:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:14:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:14:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:14:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:14:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:20:33_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:20:33_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:20:33_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:20:33_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:22:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:22:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:22:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:22:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:24:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:24:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:24:13_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:24:13_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:27:38_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:27:38_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:27:38_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:27:38_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:29:20_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:29:20_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:29:20_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:29:20_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:31:55_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:31:55_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:31:55_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:31:55_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:35:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:35:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-13__Thu_Jul_13_11:35:46_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-13__Thu_Jul_13_11:35:46_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:56:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:56:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:56:46_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:56:46_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:53_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:53_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:53_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_14:59:53_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:03:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:03:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:03:45_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:03:45_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:06:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:06:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:06:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:06:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:07:09_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:07:09_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:07:09_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:07:09_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:10:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:10:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:10:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:10:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:12:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:12:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:12:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:12:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:13:14_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:13:14_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:13:14_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:13:14_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:14:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:14:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:14:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:14:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:58:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:58:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:58:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:58:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:59:25_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:59:25_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_15:59:25_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_15:59:25_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:00:01_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:00:01_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:00:01_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:00:01_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:18:41_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:18:41_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:18:41_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:18:41_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:40:33_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:40:33_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:40:33_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:40:33_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:43:49_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:43:49_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:43:49_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:43:49_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:48:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:48:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:48:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:48:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:50:47_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:50:47_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:50:47_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:50:47_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:51:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:51:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:51:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:51:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:55:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:55:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:55:45_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:55:45_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:56:01_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:56:01_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:56:01_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:56:01_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:58:01_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:58:01_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_16:58:01_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_16:58:01_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:01:59_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:01:59_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:01:59_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:01:59_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:28:08_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:28:08_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:28:08_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:28:08_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:29:34_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:29:34_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-14__Fri_Jul_14_17:29:34_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-14__Fri_Jul_14_17:29:34_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:12:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:12:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:12:19_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:12:19_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:14:11_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:14:11_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:14:11_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:14:11_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:20:30_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:20:30_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:20:30_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:20:30_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:13_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:13_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:13_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:13_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:34_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:34_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:34_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:21:34_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:22:33_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:22:33_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:22:33_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:22:33_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:24:57_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:24:57_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:24:57_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:24:57_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:36:41_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:36:41_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:36:41_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:36:41_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:37:52_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:37:52_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:37:52_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:37:52_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:39:04_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:39:04_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:39:04_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:39:04_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:48:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:48:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:48:39_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:48:39_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:53:53_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:53:53_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:53:53_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:53:53_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:56:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:56:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_12:56:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_12:56:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:01:57_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:01:57_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:01:57_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:01:57_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:20:30_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:20:30_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:20:30_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:20:30_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:21:10_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:21:10_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:21:10_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:21:10_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:28:28_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:28:28_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:28:28_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:28:28_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:33:00_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:33:00_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_13:33:00_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_13:33:00_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_14:38:57_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_14:38:57_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_14:38:57_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_14:38:57_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_14:41:10_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_14:41:10_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:23:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:23:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:27:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:27:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:27:46_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:27:46_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:30:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:30:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:30:29_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:30:29_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:31:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:31:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:32:59_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:32:59_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:32:59_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:32:59_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:34:18_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:34:18_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:34:18_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:34:18_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:35:52_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:35:52_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-21__Fri_Jul_21_15:35:52_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-21__Fri_Jul_21_15:35:52_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_20:53:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_20:53:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_20:53:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_20:53:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:27:12_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:27:12_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:27:12_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:27:12_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:30:57_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:30:57_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:30:57_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:30:57_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:35:21_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:35:21_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:35:21_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:35:21_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:36:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:36:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:36:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:36:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:59:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:59:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_21:59:46_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_21:59:46_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_22:02:02_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_22:02:02_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-23__Sun_Jul_23_22:02:02_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-23__Sun_Jul_23_22:02:02_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:38:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:38:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:38:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:38:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:43:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:43:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:43:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:43:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:52:25_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:52:25_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_16:52:25_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_16:52:25_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:03:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:03:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:03:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:03:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:08:38_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:08:38_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:08:38_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:08:38_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:36:24_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:36:24_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:36:24_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:36:24_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:46:00_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:46:00_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:46:00_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:46:00_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:00:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:00:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:00:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:00:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:14:58_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:14:58_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:14:58_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:14:58_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:15:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:15:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:15:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:15:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:16:21_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:16:21_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:03_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:03_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:34_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:34_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:34_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:23:34_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:03_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:03_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:40_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:40_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:40_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:35:40_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:38:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:38:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:38:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:38:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:46:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:46:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:46:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:46:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:47:02_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:47:02_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:47:02_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:47:02_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:08_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:08_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:08_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:08_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:50:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:02_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:02_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:02_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:02_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:43_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:43_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:43_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:51:43_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:53:20_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:53:20_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:53:20_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:53:20_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:54:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:54:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:54:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:54:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:55:22_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:55:22_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_18:55:22_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_18:55:22_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:11:30_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:11:30_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:11:30_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:11:30_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:17:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:17:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:17:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:17:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:18:08_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:18:08_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:18:08_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:18:08_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:19:46_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:19:46_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:19:46_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:19:46_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:20:42_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:20:42_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:20:42_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:20:42_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:59_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:59_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:59_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:34:59_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:40:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:40:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:40:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:40:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:45:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:45:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_19:45:29_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_19:45:29_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:44:00_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:44:00_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:44:00_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:44:00_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:45:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:45:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:45:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:45:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:50:40_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:50:40_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:50:40_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:50:40_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:53:44_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:53:44_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:53:44_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:53:44_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:58:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:58:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:59:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:59:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_08:59:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_08:59:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:01:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:01:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:01:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:01:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:02:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:02:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:02:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:02:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:05:54_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:05:54_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:07:02_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:07:02_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:07:02_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:07:02_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:08:45_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:08:45_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:08:45_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:08:45_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:09:28_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:09:28_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:09:28_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:09:28_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:10:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:10:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:10:05_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:10:05_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:14_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:14_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:14_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:14_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:12:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:16:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:16:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:16:19_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:16:19_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:18:18_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:18:18_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:18:18_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:18:18_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:19:15_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:19:15_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:19:15_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:19:15_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:20:40_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:20:40_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:20:40_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:20:40_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:23:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:23:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:23:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:23:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:24:07_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:24:07_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:24:07_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:24:07_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:26:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:26:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:26:39_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:26:39_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:37:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:37:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:37:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:37:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:39:42_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:39:42_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:39:42_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:39:42_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:44:47_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:44:47_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:44:47_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:44:47_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:45:31_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:45:31_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:45:31_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:45:31_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:46:28_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:46:28_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:56:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:56:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_09:56:03_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_09:56:03_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:09:39_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:09:39_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:09:39_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:09:39_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:10:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:10:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:10:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:10:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:11:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:11:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:11:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:11:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:18:20_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:18:20_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:18:20_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:18:20_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:19:28_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:19:28_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:19:28_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:19:28_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:24:38_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:24:38_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:24:38_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:24:38_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:26:08_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:26:08_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-27__Thu_Jul_27_10:26:08_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-27__Thu_Jul_27_10:26:08_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:38:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:38:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:38:03_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:38:03_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:52:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:52:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:53:16_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:53:16_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:54:35_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:54:35_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:54:35_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:54:35_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:56:16_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:56:16_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:20_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:20_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:20_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:20_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:59_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_15:57:59_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:03:27_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:03:27_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:03:27_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:03:27_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:07:49_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:07:49_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:07:49_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:07:49_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:08:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:08:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:08:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:08:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:09:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:09:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:09:19_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:09:19_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:10:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:10:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:10:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:10:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:11:27_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:11:27_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:12:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:12:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:26:07_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:26:07_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:29:11_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:29:11_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:29:11_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:29:11_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:34:54_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:34:54_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:34:54_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:34:54_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:36:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:36:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:36:03_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:36:03_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_16:37:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_16:37:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:04:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:04:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:05:38_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:05:38_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:08:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:08:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:12:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:12:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:12:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:12:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:13:58_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:13:58_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:23:19_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:23:19_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:31:17_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:31:17_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:36:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:36:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:37:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:37:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:48:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:48:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:52:12_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:52:12_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-12__Sat_Aug_12_18:56:12_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-12__Sat_Aug_12_18:56:12_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:29_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:29_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:29_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:29_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:47_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:47_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:47_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:04:47_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:05:36_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:05:36_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:05:36_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:05:36_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:07:11_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:07:11_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:07:11_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:07:11_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:13:17_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:13:17_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:16:38_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:16:38_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:16:38_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:16:38_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:28:37_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:28:37_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:28:37_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:28:37_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:39:21_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:39:21_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:39:21_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:39:21_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:50:56_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:50:56_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-17__Thu_Aug_17_17:50:56_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-17__Thu_Aug_17_17:50:56_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:03_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:03_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:32_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:32_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:32_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:44:32_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:45:04_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:45:04_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:45:04_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:45:04_2023/24400334",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-08-18__Fri_Aug_18_11:47:58_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-08-18__Fri_Aug_18_11:47:58_2023/22008760",
+   "fps": 14.9254,
+   "split": "train"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:33:05_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:33:05_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-07-26__Wed_Jul_26_17:33:05_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-07-26__Wed_Jul_26_17:33:05_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-09-04__Mon_Sep__4_19:45:50_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-09-04__Mon_Sep__4_19:45:50_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-09-04__Mon_Sep__4_19:45:50_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-09-04__Mon_Sep__4_19:45:50_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-09-05__Tue_Sep__5_09:43:55_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-09-05__Tue_Sep__5_09:43:55_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-10-07__Sat_Oct__7_19:26:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-10-07__Sat_Oct__7_19:26:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-10-14__Sat_Oct_14_19:21:34_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-10-14__Sat_Oct_14_19:21:34_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-10-14__Sat_Oct_14_19:21:34_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-10-14__Sat_Oct_14_19:21:34_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-03__Fri_Nov__3_16:14:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-03__Fri_Nov__3_16:14:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-03__Fri_Nov__3_16:14:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-03__Fri_Nov__3_16:14:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-13__Mon_Nov_13_16:26:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-13__Mon_Nov_13_16:26:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-13__Mon_Nov_13_16:26:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-13__Mon_Nov_13_16:26:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-13__Mon_Nov_13_16:38:40_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-13__Mon_Nov_13_16:38:40_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-13__Mon_Nov_13_16:38:40_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-13__Mon_Nov_13_16:38:40_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-22__Wed_Nov_22_15:33:23_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-22__Wed_Nov_22_15:33:23_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-22__Wed_Nov_22_15:33:23_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-22__Wed_Nov_22_15:33:23_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-24__Fri_Nov_24_16:07:26_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-24__Fri_Nov_24_16:07:26_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-24__Fri_Nov_24_16:07:26_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-24__Fri_Nov_24_16:07:26_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-25__Sat_Nov_25_13:28:01_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-25__Sat_Nov_25_13:28:01_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-27__Mon_Nov_27_09:53:06_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-27__Mon_Nov_27_09:53:06_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-11-27__Mon_Nov_27_09:53:06_2023",
+   "serial": "24400334",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-11-27__Mon_Nov_27_09:53:06_2023/24400334",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-12-13__Wed_Dec_13_23:59:48_2023",
+   "serial": "22008760",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-12-13__Wed_Dec_13_23:59:48_2023/22008760",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-12-16__Sat_Dec_16_17:37:06_2023",
+   "serial": "20521388",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-12-16__Sat_Dec_16_17:37:06_2023/20521388",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "AUTOLab__success__2023-12-16__Sat_Dec_16_17:37:06_2023",
+   "serial": "24259877",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/AUTOLab__success__2023-12-16__Sat_Dec_16_17:37:06_2023/24259877",
+   "fps": 14.9254,
+   "split": "val"
+  },
+  {
+   "session": "CLVR__success__2023-05-09__Tue_May__9_04:49:41_2023",
+   "serial": "20103212",
+   "path": "/media/NVME_8TB/genvideorobot/OSCAR_robot_droid/droid/droid/CLVR__success__2023-05-09__Tue_May__9_04:49:41_2023/20103212",
+   "fps": 14.9254,
+   "split": "val"
+  }
+ ]
+}
