@@ -25,6 +25,7 @@ Run on a machine with the Wan2.2 checkpoints and a CUDA GPU -- see README.md.
 import argparse
 import math
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -77,6 +78,13 @@ from latent_paste import (  # noqa: E402
     weight_to_tensor,
     write_delta,
     write_delta_trajectory,
+)
+from noise_inversion import (  # noqa: E402
+    EulerFlowScheduler,
+    box_weight,
+    copy_region_across_frames,
+    euler_invert,
+    shift_inverted_region,
 )
 
 
@@ -175,6 +183,51 @@ class StaticPasteEditor(WanFrameRangeEditor):
             raise NotImplementedError(f"unsupported solver: {sample_solver}")
         return scheduler
 
+    @contextmanager
+    def _sampling(self):
+        """Model on the GPU, autocast, no_grad -- the setup every sampling loop
+        here needs. Re-entrant, so inversion and the denoise that follows it
+        share one model load instead of offloading in between."""
+        if getattr(self, "_sampling_active", False):
+            yield
+            return
+        pipe = self.pipe
+        no_sync = getattr(pipe.model, "no_sync", _noop)
+        if self.offload_model or pipe.init_on_cpu:
+            pipe.model.to(self.device)
+            torch.cuda.empty_cache()
+        self._sampling_active = True
+        try:
+            with torch.amp.autocast("cuda", dtype=pipe.param_dtype), torch.no_grad(), no_sync():
+                yield
+        finally:
+            self._sampling_active = False
+        if self.offload_model:
+            pipe.model.cpu()
+            torch.cuda.synchronize()
+            torch.cuda.empty_cache()
+
+    def _velocity(self, latent, t, mask2, seq_len, context, context_null, guide_scale):
+        """One CFG velocity prediction, with the per-token timestep that tells
+        the DiT mask-0 positions are clean. Shared by the denoise loop and
+        inversion so both call the model identically; guide_scale 1 skips the
+        unconditional pass (the same result, half the cost)."""
+        pipe = self.pipe
+        timestep = torch.stack([t]).to(self.device)
+        temp_ts = (mask2[0][:, ::2, ::2] * timestep).flatten()
+        temp_ts = torch.cat([temp_ts, temp_ts.new_ones(seq_len - temp_ts.size(0)) * timestep])
+        timestep_tok = temp_ts.unsqueeze(0)
+
+        noise_pred_cond = pipe.model([latent], t=timestep_tok, context=context, seq_len=seq_len)[0]
+        if self.offload_model:
+            torch.cuda.empty_cache()
+        if guide_scale == 1.0:
+            return noise_pred_cond
+        noise_pred_uncond = pipe.model([latent], t=timestep_tok, context=context_null, seq_len=seq_len)[0]
+        if self.offload_model:
+            torch.cuda.empty_cache()
+        return noise_pred_uncond + guide_scale * (noise_pred_cond - noise_pred_uncond)
+
     def _denoise(
         self,
         latent: torch.Tensor,
@@ -189,6 +242,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         seed_g: torch.Generator,
         paste: PasteConfig | None,
         z_frozen: torch.Tensor | None = None,
+        post_step=None,
     ) -> torch.Tensor:
         """The `frame_range_edit.py` denoising loop with one insertion.
 
@@ -196,8 +250,11 @@ class StaticPasteEditor(WanFrameRangeEditor):
         absolute index `k` is `scheduler.sigmas[k]`, so selecting the paste
         window by sigma stays meaningful regardless of where the resume landed
         or how many sampling steps were requested.
+
+        `post_step(j, latent) -> latent`, if given, runs after each step's
+        re-hold, with `j` counting steps actually run (used by
+        `--freeze_mode noise`).
         """
-        pipe = self.pipe
         timesteps = scheduler.timesteps[first_step:]
         sigmas = scheduler.sigmas
         # What mask-0 positions are held at. Defaults to `z` (the source
@@ -209,15 +266,7 @@ class StaticPasteEditor(WanFrameRangeEditor):
         if paste is not None and paste.weight_hw is not None:
             weight_t = weight_to_tensor(paste.weight_hw, latent.device, latent.dtype)
 
-        arg_c = {"context": context, "seq_len": seq_len}
-        arg_null = {"context": context_null, "seq_len": seq_len}
-
-        no_sync = getattr(pipe.model, "no_sync", _noop)
-        if self.offload_model or pipe.init_on_cpu:
-            pipe.model.to(self.device)
-            torch.cuda.empty_cache()
-
-        with torch.amp.autocast("cuda", dtype=pipe.param_dtype), torch.no_grad(), no_sync():
+        with self._sampling():
             for j, t in enumerate(timesteps):
                 abs_idx = first_step + j
                 sigma = float(sigmas[min(abs_idx, len(sigmas) - 1)])
@@ -246,35 +295,20 @@ class StaticPasteEditor(WanFrameRangeEditor):
                     print(f"[paste] step {abs_idx} sigma={sigma:.4f} "
                           f"({paste.applied}/{paste.max_steps})")
 
-                latent_model_input = [latent]
-                timestep = torch.stack([t]).to(self.device)
-
-                temp_ts = (mask2[0][:, ::2, ::2] * timestep).flatten()
-                temp_ts = torch.cat([temp_ts, temp_ts.new_ones(seq_len - temp_ts.size(0)) * timestep])
-                timestep_tok = temp_ts.unsqueeze(0)
-
-                noise_pred_cond = pipe.model(latent_model_input, t=timestep_tok, **arg_c)[0]
-                if self.offload_model:
-                    torch.cuda.empty_cache()
-                noise_pred_uncond = pipe.model(latent_model_input, t=timestep_tok, **arg_null)[0]
-                if self.offload_model:
-                    torch.cuda.empty_cache()
-                noise_pred = noise_pred_uncond + guide_scale * (noise_pred_cond - noise_pred_uncond)
+                noise_pred = self._velocity(
+                    latent, t, mask2, seq_len, context, context_null, guide_scale)
 
                 temp_x0 = scheduler.step(
                     noise_pred.unsqueeze(0), t, latent.unsqueeze(0), return_dict=False, generator=seed_g)[0]
                 latent = temp_x0.squeeze(0)
                 latent = (1.0 - mask2) * z_hold + mask2 * latent
+                if post_step is not None:
+                    latent = post_step(j, latent)
 
         if paste is not None and paste.applied == 0:
             print(f"[paste] WARNING: no step fell in sigma range "
                   f"[{paste.sigma_lo}, {paste.sigma_hi}] -- nothing was corrected. "
                   f"Widen --paste_sigma_range or raise --noise_strength.")
-
-        if self.offload_model:
-            pipe.model.cpu()
-            torch.cuda.synchronize()
-            torch.cuda.empty_cache()
         return latent
 
     def edit(
@@ -375,6 +409,121 @@ class StaticPasteEditor(WanFrameRangeEditor):
             seq_len, guide_scale, seed_g, paste, z_frozen=z_frozen)
         return vae_output_to_frames(pipe.vae.decode([latent])[0])
 
+    def edit_from_inversion(
+        self,
+        window_frames: np.ndarray,
+        regen_mask: np.ndarray,
+        inversion_mask: np.ndarray,
+        prompt: str,
+        *,
+        paste_spec: dict | None = None,
+        freeze_spec: dict | None = None,
+        move_spec: dict | None = None,
+        noise_freeze_spec: dict | None = None,
+        n_prompt: str = "",
+        inversion_prompt: str | None = None,
+        sampling_steps: int = 20,
+        shift: float = 5.0,
+        guide_scale: float = 5.0,
+        inversion_guide_scale: float = 1.0,
+        fixed_point_iters: int = 0,
+        seed: int = -1,
+        noise_strength: float = 0.9,
+        save_inversion: Path | None = None,
+    ) -> np.ndarray:
+        """Invert the source up to sigma ~ `noise_strength`, edit there, denoise.
+
+        See `noise_inversion.py` for the math. Same crop window as the SDEdit
+        path, and no cache: any video can be inverted, including one that has
+        already been edited. Both halves use Euler on one shared sigma grid
+        (`EulerFlowScheduler`), so the denoise retraces the inversion.
+
+        `inversion_mask` is what gets inverted -- the edit range, without the
+        freeze holes (the source is inverted as it is; the freeze is applied
+        afterwards), plus the anchor frame when something needs to read its
+        inverted latent. `regen_mask` is what gets denoised, as in `edit()`.
+
+        Edits applied to the inverted latent, in order:
+          * `move_spec`: `shift_inverted_region`, the object moved in noise
+            space rather than pasted as clean content (Method G).
+          * `noise_freeze_spec`: the anchor's inverted box copied into every
+            target frame, then kept identical across frames for the first
+            `hold_steps` denoise steps and released (`--freeze_mode noise`).
+          * `freeze_spec`: the ordinary hard freeze, via `regen_mask`/`z_hold`.
+        """
+        pipe = self.pipe
+        z = pipe.vae.encode([frames_to_vae_input(window_frames, self.device)])[0]
+
+        mask2, seq_len = self._mask_and_seq_len(regen_mask, z)
+        inv_mask2, _ = self._mask_and_seq_len(inversion_mask, z)
+        seed_g = self._generator(seed)
+
+        context, context_null = self._encode_prompts(prompt, n_prompt)
+        inv_context = context
+        if inversion_prompt is not None and inversion_prompt != prompt:
+            inv_context, _ = self._encode_prompts(inversion_prompt, n_prompt)
+
+        if not (0.0 < noise_strength <= 1.0):
+            raise ValueError(f"noise_strength must be in (0, 1], got {noise_strength}")
+        scheduler = EulerFlowScheduler(
+            sampling_steps, shift, num_train_timesteps=pipe.num_train_timesteps, device=self.device)
+        start_idx = min(round(len(scheduler.timesteps) * (1.0 - noise_strength)),
+                        len(scheduler.timesteps) - 1)
+        sigmas_up = scheduler.inversion_sigmas(start_idx)
+        sigma0 = float(sigmas_up[-1])
+        passes = (1 if inversion_guide_scale == 1.0 else 2) * (1 + fixed_point_iters)
+        print(f"[invert] 0 -> sigma {sigma0:.4f} in {len(sigmas_up) - 1} Euler steps "
+              f"(guide_scale={inversion_guide_scale}, fixed_point={fixed_point_iters}, "
+              f"{passes} model pass(es)/step), then {len(scheduler.timesteps) - start_idx} "
+              f"denoise steps back")
+
+        num_train = pipe.num_train_timesteps
+
+        def inv_velocity(x, sigma):
+            t = torch.tensor(sigma * num_train, device=self.device, dtype=torch.float32)
+            return self._velocity(x, t, inv_mask2, seq_len, inv_context, context_null, inversion_guide_scale)
+
+        temporal = [bool(inversion_mask[i].any()) for i in range(inversion_mask.shape[0])]
+        with self._sampling():
+            x_inv = euler_invert(inv_velocity, z, sigmas_up, mask2=inv_mask2, z_hold=z,
+                                 fixed_point_iters=fixed_point_iters)
+            if save_inversion is not None:
+                torch.save({"latent": x_inv.cpu(), "z": z.cpu(), "sigma": sigma0,
+                            "sampling_steps": sampling_steps, "shift": shift,
+                            "start_idx": start_idx}, save_inversion)
+                print(f"[invert] wrote {save_inversion}")
+
+            latent = x_inv
+            if move_spec is not None:
+                anchor_idx = move_spec["anchor_idx"]
+                targets = target_latent_frames(
+                    [bool(regen_mask[i].any()) for i in range(regen_mask.shape[0])], anchor_idx)
+                plan = _build_object_plan(
+                    move_spec["object_paths"], move_spec["window"], anchor_idx, targets,
+                    z.shape[-2], z.shape[-1], move_spec["vae_spatial_stride"], move_spec["feather"])
+                if move_spec["source"] == "anchor" and not temporal[anchor_idx]:
+                    raise ValueError("--move_source anchor needs the anchor frame inverted -- "
+                                     "it must be in inversion_mask")
+                latent = shift_inverted_region(
+                    latent, plan, source=move_spec["source"], anchor_idx=anchor_idx,
+                    vacated=move_spec["vacated"], generator=seed_g)
+                print(f"[move] shifted in inverted latent at sigma {sigma0:.4f} "
+                      f"(source={move_spec['source']}, vacated={move_spec['vacated']})")
+
+            post_step = None
+            if noise_freeze_spec is not None:
+                latent, post_step = _noise_freeze(noise_freeze_spec, latent, regen_mask, temporal)
+
+            z_frozen = _make_frozen(freeze_spec, regen_mask, z)
+            z_hold = z if z_frozen is None else z_frozen
+            latent = (1.0 - mask2) * z_hold + mask2 * latent
+
+            paste = _make_paste(paste_spec, regen_mask, z)
+            latent = self._denoise(
+                latent, z, mask2, scheduler, start_idx, context, context_null,
+                seq_len, guide_scale, seed_g, paste, z_frozen=z_frozen, post_step=post_step)
+        return vae_output_to_frames(pipe.vae.decode([latent])[0])
+
     def _mask_and_seq_len(self, regen_mask: np.ndarray, z: torch.Tensor):
         mask = torch.tensor(regen_mask, dtype=z.dtype, device=self.device)
         if mask.shape != z.shape[1:]:
@@ -442,10 +591,25 @@ def _make_paste(paste_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor
         print(f"[static] anchor=latent frame {anchor_idx}, targets={targets[0]}..{targets[-1]} "
               f"({len(targets)} frames), weighted cells={int((weight > 0).sum())}/{latent_h * latent_w}")
 
+    plan = _build_object_plan(
+        paste_spec["object_paths"], paste_spec["window"], anchor_idx, targets,
+        latent_h, latent_w, stride, feather)
+
+    return PasteConfig(
+        anchor_idx, targets, weight_hw=weight, plan=plan,
+        strength=paste_spec["strength"], object_strength=paste_spec["object_strength"],
+        vacated_fill=paste_spec["vacated_fill"], sigma_range=paste_spec["sigma_range"],
+        max_steps=paste_spec["max_steps"], fft_ratio=paste_spec["fft_ratio"])
+
+
+def _build_object_plan(object_paths, window, anchor_idx, targets, latent_h, latent_w, stride, feather):
+    """Per-latent-frame `LatentShift`s for every object path, with the same
+    reporting either consumer needs: Method G's `write_delta_trajectory`, or
+    `shift_inverted_region` on the `--inversion` path."""
     plan = []
-    for obj_idx, boxes in enumerate(paste_spec["object_paths"]):
+    for obj_idx, boxes in enumerate(object_paths):
         obj_plan = trajectory_to_latent_plan(
-            paste_spec["window"], boxes, anchor_idx, targets,
+            window, boxes, anchor_idx, targets,
             latent_h, latent_w, vae_spatial_stride=stride, feather=feather)
         if not obj_plan:
             raise ValueError(
@@ -462,12 +626,39 @@ def _make_paste(paste_spec: dict | None, regen_mask: np.ndarray, z: torch.Tensor
                   f"{stride}px, so this trajectory will barely register -- use a larger --move_to "
                   f"or accept that this edit cannot express it.")
         plan.extend(obj_plan)
+    return plan
 
-    return PasteConfig(
-        anchor_idx, targets, weight_hw=weight, plan=plan,
-        strength=paste_spec["strength"], object_strength=paste_spec["object_strength"],
-        vacated_fill=paste_spec["vacated_fill"], sigma_range=paste_spec["sigma_range"],
-        max_steps=paste_spec["max_steps"], fft_ratio=paste_spec["fft_ratio"])
+
+def _noise_freeze(spec: dict, latent: torch.Tensor, regen_mask: np.ndarray, inverted: list[bool]):
+    """`--freeze_mode noise`: freeze a box in the inverted latent, not in `z`.
+
+    Copies the anchor frame's *inverted* box (content and noise) into every
+    target frame, and returns a `post_step` that keeps the box identical across
+    frames for the first `hold_steps` denoise steps before releasing it, so the
+    rest of the schedule can blend the border. Soft, unlike the hard freeze:
+    the box is held by its content, not clamped, once released.
+    """
+    anchor_idx = spec["anchor_idx"]
+    if not inverted[anchor_idx]:
+        raise ValueError("--freeze_mode noise needs the anchor frame inverted -- it must be in "
+                         "inversion_mask")
+    targets = target_latent_frames(
+        [bool(regen_mask[i].any()) for i in range(regen_mask.shape[0])], anchor_idx)
+    if not targets:
+        raise ValueError("no latent frames left to freeze -- the regenerate region is empty")
+    h, w = latent.shape[-2:]
+    weight = weight_to_tensor(box_weight(spec["latent_boxes"], h, w, spec["feather"]),
+                              latent.device, latent.dtype)
+    latent = copy_region_across_frames(latent, weight, anchor_idx, targets)
+    hold_steps, ref = spec["hold_steps"], targets[0]
+    print(f"[freeze noise] anchor=latent frame {anchor_idx} (inverted) -> targets "
+          f"{targets[0]}..{targets[-1]}, held for the first {hold_steps} denoise step(s), "
+          f"cells={int((weight > 0).sum())}/{h * w} per frame")
+
+    def post_step(j, x):
+        return copy_region_across_frames(x, weight, ref, targets) if j < hold_steps else x
+
+    return latent, post_step
 
 
 def scale_boxes(boxes: list[tuple[int, int, int, int]], sx: float, sy: float):
@@ -522,6 +713,15 @@ def build_object_paths(
         paths.append(linear_trajectory(scaled, (dx * mw / ow, dy * mh / oh), n_pixel))
 
     return paths
+
+
+def edit_range_psnr(original: np.ndarray, edited: np.ndarray, window: FrameRangeWindow) -> float:
+    """Mean PSNR over the regenerated frames -- how faithfully the edit
+    reproduced the source there. The inversion reconstruction check."""
+    a = original[window.edit_start:window.edit_end + 1].astype(np.float64)
+    b = edited[window.edit_start:window.edit_end + 1].astype(np.float64)
+    mse = ((a - b) ** 2).reshape(len(a), -1).mean(axis=1)
+    return float(np.mean(10.0 * np.log10(255.0 ** 2 / np.maximum(mse, 1e-10))))
 
 
 def visualize_boxes(frame: np.ndarray, boxes, save_path: Path, stride: int = 16) -> None:
@@ -624,6 +824,37 @@ def parse_args():
     ap.add_argument("--visualize_boxes", type=Path, default=None,
                     help="write the anchor frame with the boxes drawn on it, then exit without "
                          "loading the model")
+
+    inv = ap.add_argument_group("noise inversion (Method H)")
+    inv.add_argument("--inversion", action="store_true",
+                     help="invert the source window up to sigma ~ --noise_strength with Euler steps and "
+                          "denoise back from there, instead of SDEdit's random re-noise or --cache_path. "
+                          "Works on any video. Both halves use Euler on the --num_steps/--shift grid, so "
+                          "--sample_solver is ignored. With no boxes it is the reconstruction check")
+    inv.add_argument("--inversion_prompt", type=str, default=None,
+                     help="prompt the source is inverted under; defaults to the edit prompt")
+    inv.add_argument("--inversion_guide_scale", type=float, default=1.0,
+                     help="CFG during inversion. 1.0 (default) is one model pass per step and inverts "
+                          "most faithfully; higher values make the round trip drift")
+    inv.add_argument("--inversion_fixed_point", type=int, default=0,
+                     help="fixed-point refinements per inversion step (each one an extra model pass); "
+                          "makes the inversion the exact inverse of the Euler denoise step")
+    inv.add_argument("--move_source", type=str, default="self", choices=["self", "anchor"],
+                     help="with --object_box/--object_traj: 'self' moves each frame's own inverted content "
+                          "(the object keeps its motion, offset along the path); 'anchor' copies the "
+                          "anchor frame's, as Method G does")
+    inv.add_argument("--vacated_noise", type=str, default="noise", choices=["noise", "keep"],
+                     help="what fills the cells a moved object left: fresh noise matched to the inverted "
+                          "latent's statistics, or 'keep' (the ghost control)")
+    inv.add_argument("--freeze_mode", type=str, default="hard", choices=["hard", "noise"],
+                     help="'hard' holds --freeze_box at clean anchor content every step (exact). 'noise' "
+                          "copies the anchor's *inverted* box into every frame instead, keeps it identical "
+                          "across frames for --freeze_hold_steps, then releases it so the model can blend "
+                          "the border (soft; aimed at seams at the box edge). 'noise' needs --inversion")
+    inv.add_argument("--freeze_hold_steps", type=int, default=3,
+                     help="with --freeze_mode noise: denoise steps to keep the box identical across frames")
+    inv.add_argument("--save_inversion", type=Path, default=None,
+                     help="write the inverted latent (before any edit) to this .pt")
     return ap.parse_args()
 
 
@@ -633,11 +864,16 @@ def main():
         raise ValueError("must pass --prompt or --prompt_file")
     if bool(args.object_box) != bool(args.move_to):
         raise ValueError("--object_box and --move_to must be given together")
-    if (not args.static_box and not args.object_traj and not args.object_box
-            and not args.freeze_box):
+    has_boxes = bool(args.static_box or args.object_traj or args.object_box or args.freeze_box)
+    if not has_boxes and not args.inversion:
         raise ValueError(
             "must pass at least one of --static_box, --freeze_box, --object_traj or --object_box -- "
-            "without any of them this script is exactly frame_range_edit.py, so use that instead")
+            "without any of them this script is exactly frame_range_edit.py, so use that instead "
+            "(or pass --inversion alone for the reconstruction check)")
+    if args.inversion and args.cache_path is not None:
+        raise ValueError("--inversion and --cache_path are alternative entry paths -- pass one")
+    if args.freeze_mode == "noise" and not (args.inversion and args.freeze_box):
+        raise ValueError("--freeze_mode noise needs --inversion and at least one --freeze_box")
     prompts = [args.prompt] if args.prompt else [
         line.strip() for line in args.prompt_file.read_text().splitlines() if line.strip()
     ]
@@ -675,9 +911,11 @@ def main():
 
     temporal_mask = build_latent_regen_mask(window)
     h_latent, w_latent = valid_h // stride, valid_w // cfg.vae_stride[2]
-    if model_freeze_boxes:
-        for given, snapped in zip(freeze_boxes, model_freeze_boxes):
-            print(f"[freeze] {given}  ->  held region {snapped} (snapped out to {stride * patch}px)")
+    for given, snapped in zip(freeze_boxes, model_freeze_boxes):
+        print(f"[freeze] {given}  ->  held region {snapped} (snapped out to {stride * patch}px)")
+    # --freeze_mode noise holds the box through the inverted latent instead, so
+    # the box stays in the regenerate mask and is denoised like everything else.
+    if model_freeze_boxes and args.freeze_mode == "hard":
         regen_mask = build_freeze_regen_mask(
             window, model_freeze_boxes, valid_h, valid_w,
             vae_spatial_stride=stride, patch_spatial=patch)
@@ -690,12 +928,12 @@ def main():
     anchor_idx = args.anchor_latent_frame
     if anchor_idx is None:
         anchor_idx = anchor_latent_frame(window)
-        if anchor_idx is None:
+        if anchor_idx is None and has_boxes:
             raise ValueError(
                 "the edit region starts at latent frame 0, so there is no frozen anchor frame "
                 "before it (this happens when --start_frame is 0). Pass --anchor_latent_frame "
                 "explicitly to choose a reference, or start the edit later in the video")
-    if temporal_mask[anchor_idx]:
+    if anchor_idx is not None and temporal_mask[anchor_idx]:
         print(f"[paste] WARNING: anchor latent frame {anchor_idx} is inside the regenerate region, "
               f"so it is not frozen and may itself drift during the edit")
 
@@ -715,17 +953,37 @@ def main():
         print(f"anchor latent frame {anchor_idx} -> source pixel frame {anchor_pixel}")
         return
 
-    freeze_spec = None
-    if model_freeze_boxes:
-        freeze_spec = {
-            "latent_boxes": [(x1 // stride, y1 // stride, x2 // stride, y2 // stride)
-                             for (x1, y1, x2, y2) in model_freeze_boxes],
-            "anchor_idx": anchor_idx,
-        }
+    freeze_latent_boxes = [(x1 // stride, y1 // stride, x2 // stride, y2 // stride)
+                           for (x1, y1, x2, y2) in model_freeze_boxes]
+    freeze_spec = noise_freeze_spec = None
+    if model_freeze_boxes and args.freeze_mode == "hard":
+        freeze_spec = {"latent_boxes": freeze_latent_boxes, "anchor_idx": anchor_idx}
+    elif model_freeze_boxes:
+        noise_freeze_spec = {"latent_boxes": freeze_latent_boxes, "anchor_idx": anchor_idx,
+                             "hold_steps": args.freeze_hold_steps, "feather": args.feather}
 
-    paste_spec = None if not (model_boxes or object_paths) else {
+    # On the --inversion path objects move in the inverted latent instead of
+    # through write_delta_trajectory; --static_box still goes through the paste.
+    move_spec = None
+    if args.inversion and object_paths:
+        move_spec = {"object_paths": object_paths, "window": window, "anchor_idx": anchor_idx,
+                     "source": args.move_source, "vacated": args.vacated_noise,
+                     "feather": args.feather, "vae_spatial_stride": stride}
+    paste_objects = [] if args.inversion else object_paths
+
+    inversion_mask = None
+    if args.inversion:
+        # Invert the edit range as the source has it (no freeze holes), plus the
+        # anchor whenever something reads the anchor's *inverted* latent.
+        inversion_mask = np.broadcast_to(
+            np.array(temporal_mask, dtype=bool)[:, None, None],
+            (len(temporal_mask), h_latent, w_latent)).copy()
+        if noise_freeze_spec is not None or (move_spec is not None and args.move_source == "anchor"):
+            inversion_mask[anchor_idx] = True
+
+    paste_spec = None if not (model_boxes or paste_objects) else {
         "boxes": model_boxes,
-        "object_paths": object_paths,
+        "object_paths": paste_objects,
         "window": window,
         "anchor_idx": anchor_idx,
         "strength": args.paste_strength,
@@ -749,6 +1007,17 @@ def main():
                 freeze_spec=freeze_spec,
                 n_prompt=args.negative_prompt, guide_scale=args.guide_scale,
                 seed=args.seed, resume_noise_pct=args.noise_strength)
+        elif args.inversion:
+            edited = editor.edit_from_inversion(
+                model_input_frames, regen_mask, inversion_mask, prompt,
+                paste_spec=paste_spec, freeze_spec=freeze_spec, move_spec=move_spec,
+                noise_freeze_spec=noise_freeze_spec,
+                n_prompt=args.negative_prompt, inversion_prompt=args.inversion_prompt,
+                sampling_steps=args.num_steps, shift=args.shift, guide_scale=args.guide_scale,
+                inversion_guide_scale=args.inversion_guide_scale,
+                fixed_point_iters=args.inversion_fixed_point, seed=args.seed,
+                noise_strength=args.noise_strength, save_inversion=args.save_inversion)
+            edited = resize_frames(edited, orig_w, orig_h)
         else:
             edited = editor.edit(
                 model_input_frames, regen_mask, prompt, paste_spec=paste_spec,
@@ -761,6 +1030,10 @@ def main():
 
         full_edited = splice_edited_frames(full_frames, edited, window)
         assert_outside_range_intact(full_frames, full_edited, window.edit_start, window.edit_end)
+        if args.inversion:
+            print(f"[invert] edit-range PSNR vs source: "
+                  f"{edit_range_psnr(full_frames, full_edited, window):.2f} dB "
+                  f"(the reconstruction check: high with no boxes, lower where you moved things)")
 
         out_path = args.output
         if len(prompts) > 1:

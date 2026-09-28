@@ -74,8 +74,9 @@ DiT patch 2 -- are that config's.
 | Background furniture drifts when it should be bolted down | [E. Soft pin](#method-e--soft-pin-a-drifting-region---static_box) | `static_range_edit.py --static_box` |
 | A region must not change **at all** | [F. Hard freeze](#method-f--hard-freeze-a-region---freeze_box) | `static_range_edit.py --freeze_box` |
 | Something should move along a path | [G. Object drag](#method-g--move-an-object-along-a-trajectory) | `--object_box` / `--object_traj` |
+| Like C, but no cache (or the video was already edited); or G/F leave artifacts | [H. Noise inversion](#method-h--noise-inversion---inversion) | `static_range_edit.py --inversion` |
 
-E, F and G compose in a single run. A/B/C are entry paths that E/F/G sit on
+E, F and G compose in a single run. A/B/C/H are entry paths that E/F/G sit on
 top of.
 
 ---
@@ -671,6 +672,129 @@ Two constraints worth knowing before authoring a path:
 
 ---
 
+## Method H -- noise inversion (`--inversion`)
+
+A third way to reach an intermediate noisy latent, next to SDEdit (A) and the
+cache (C). SDEdit re-noises with a *random* `eps`, so the result denoises to a
+plausible neighbour of the source. The cache is the real trajectory but only
+exists for videos generated with `--cache_output`, and dies with the first
+edit. Inversion runs the sampler **backwards** from the clean encoding and
+gets a noisy latent that denoises back to *this* video -- any video, edited
+or not. Edits (moving the arm, freezing the cabinet) are then made in that
+latent, at high noise, where the model has the whole schedule to make them
+look natural.
+
+### Why it works on Wan2.2
+
+Wan2.2 is rectified flow, not DDPM: `x_sigma = (1 - sigma) z0 + sigma eps`,
+and the DiT predicts the velocity `v = eps - z0 = dx/dsigma`
+(`training/conditioning.py::velocity_target`). Sampling integrates that ODE,
+and the ODE is deterministic, so it runs both ways:
+
+```
+denoise  x_{sigma-d} = x_sigma - d * v(x_sigma, sigma)     # one Euler sampling step
+invert   x_{sigma+d} = x_sigma + d * v(x_sigma, sigma)     # the same step, mirrored
+```
+
+The first line is the familiar "`v = f(x_0.9, t=0.9)`, `x = x_0.9 - v * delta`":
+it is the *denoising* half. Where `x_0.9` comes from is what makes it
+inversion: here it is the output of the second line, walked up from `z`, not
+`0.1 z + 0.9 eps` with a random `eps`. The model is called with timestep
+`sigma * 1000`.
+
+Both halves use plain **Euler** on the same sigma grid
+(`noise_inversion.EulerFlowScheduler`), because UniPC/DPM++ carry a multistep
+history with no clean reverse. `--sample_solver` is ignored on this path.
+
+### Check the reconstruction first
+
+```bash
+python static_range_edit.py \
+    --input_video initial.mp4 \
+    --start_frame 54 --end_frame 120 \
+    --prompt "the robot arm closes the drawer" \
+    --inversion --noise_strength 0.9 \
+    --output recon.mp4 \
+    --ckpt_dir Wan2.2/checkpoints/Wan2.2-TI2V-5B
+```
+
+With no boxes this should give back the input. The run prints the edit-range
+PSNR against the source; compare it with an SDEdit run (`frame_range_edit.py`)
+at the same strength, which should be clearly lower. If it is not high:
+
+- Euler inversion is approximate -- each step evaluates `v` at `x_sigma`, but
+  the denoise step it must undo evaluates it at `x_{sigma+d}`.
+  `--inversion_fixed_point K` iterates the step to the exact inverse, at `K`
+  extra model passes per step (`2`-`3` is usually plenty).
+- CFG breaks the symmetry. Inversion runs at `--inversion_guide_scale 1`
+  (default; also one model pass instead of two). The denoise uses
+  `--guide_scale`; if reconstruction suffers, try lowering it toward 1-2.
+- More `--num_steps` shrinks the per-step error.
+
+`--noise_strength` keeps its SDEdit meaning -- the fraction of steps run, not
+sigma -- so with `--shift 5` a value of `0.9` starts at sigma ~0.98. The run
+prints the actual sigma.
+
+### Move a region in the inverted latent
+
+```bash
+python static_range_edit.py ... --inversion --noise_strength 0.9 \
+    --freeze_box 620,180,900,540 \
+    --object_box 330,230,630,440 --move_to 0,64
+```
+
+Same `--object_box/--move_to/--object_traj` inputs as Method G, but instead
+of `write_delta_trajectory`'s clean-content paste, the box is moved *inside
+the inverted latent* -- content and noise together
+(`noise_inversion.shift_inverted_region`). At high sigma that latent is close
+to Gaussian, so the moved box is still something the model could have been
+handed; that is the hypothesis for why this should leave fewer
+out-of-distribution artifacts than G.
+
+- `--move_source self` (default) moves each frame's *own* content: the arm
+  keeps the motion it had and is offset along the path. `anchor` copies the
+  anchor frame into every frame, as G does.
+- `--vacated_noise noise` (default) refills the cells the object left with
+  fresh noise matched to the inverted latent's per-channel statistics, so the
+  model redraws them from context. `keep` leaves them alone -- the ghost
+  control, same role as G's `--vacated_fill 0`.
+- `--static_box` still composes (it goes through the usual paste).
+
+### Freeze boxes under inversion (`--freeze_mode`)
+
+- `hard` (default) -- Method F unchanged: clamped to the anchor's clean
+  content every step, timestep 0, exact. Caveat: inversion reproduces
+  everything *outside* the box faithfully, drift included, so if the source
+  drifted, a pinned box can tear against its surroundings *more* than with
+  SDEdit at 1.0 (which redraws the surroundings to fit).
+- `noise` -- aimed at that seam. The anchor frame is inverted too, and its
+  inverted box (content and noise) is copied into every target frame. Identical
+  noise across frames reads to the model as "this region is static". The box
+  is kept identical across frames for the first `--freeze_hold_steps` (default
+  3) denoise steps -- at the current noise level, not clamped to clean
+  content -- then released, so the remaining steps can blend its border.
+  Soft: the box is held by its content, not clamped, so measure it with
+  `tools/measure_drift.py`. Try `--freeze_hold_steps` 2/3/5 against `hard`
+  on the same seed.
+
+Because the SDEdit-style window puts the anchor at the window's latent frame
+0, `noise` (and `--move_source anchor`) invert that frame as well; the
+trailing `--context_blocks` frames stay clean context during inversion.
+
+| Flag | Default | Notes |
+|---|---|---|
+| `--inversion` | off | this entry path; exclusive with `--cache_path` |
+| `--inversion_prompt` | `--prompt` | prompt the source is inverted under |
+| `--inversion_guide_scale` | `1.0` | CFG while inverting |
+| `--inversion_fixed_point` | `0` | refinements per inversion step |
+| `--move_source` | `self` | `self` / `anchor` |
+| `--vacated_noise` | `noise` | `noise` / `keep` |
+| `--freeze_mode` | `hard` | `hard` / `noise` |
+| `--freeze_hold_steps` | `3` | `noise` freeze only |
+| `--save_inversion` | none | write the inverted latent (pre-edit) to a `.pt` |
+
+---
+
 ## `latent_guidance.py` -- implemented, not wired up
 
 The alternative to `latent_paste.py`, and the part of SG-I2V that their own
@@ -734,6 +858,7 @@ not exist in this tree.
 | `static_range_edit.py` | `StaticPasteEditor(WanFrameRangeEditor)`: same machinery plus the in-loop latent correction. Imports `frame_range_edit.py`, never copies it |
 | `frame_mapping.py` | pixel↔latent index math, window construction, all mask/box/trajectory builders. Pure Python + numpy, no torch, no model |
 | `latent_paste.py` | the latent writes themselves: `write_delta`, `write_delta_trajectory`, `soften_toward_noise`, `pin_anchor_content`, `fft_restore` |
+| `noise_inversion.py` | Method H: `EulerFlowScheduler`, `euler_invert`, `shift_inverted_region`, `copy_region_across_frames`. Model-free; tested by `test_noise_inversion.py` |
 | `latent_guidance.py` | gradient guidance (above). Not wired to any CLI |
 | `tools/draw_box.py` | box and trajectory preview; owns the shared `read_video_frames`/`parse_box` helpers |
 | `tools/measure_drift.py` | drift measurement, before and after |
